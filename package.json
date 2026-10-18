@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "notion:setup": "node scripts/setup-notion.mjs",
-    "notion:check": "node scripts/check-notion.mjs"
+    "notion:check": "node scripts/check-notion.mjs",
+    "test:filter": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/test-filter.mjs"
   },
   "dependencies": {
     "next": "16.4.2",
