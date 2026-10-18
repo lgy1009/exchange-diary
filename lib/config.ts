@@ -27,6 +27,8 @@ export const DB_TITLES = {
   courses: "수업",
   trips: "여행",
   entries: "일기",
+  profile: "프로필",
+  guestbook: "방명록",
 } as const;
 export type DbKey = keyof typeof DB_TITLES;
 

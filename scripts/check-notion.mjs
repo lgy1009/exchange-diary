@@ -22,8 +22,10 @@ if (!TOKEN) {
 const EXPECT = {
   일정: { 이름: "title", 날짜: "date", 종류: "select", 장소: "rich_text", 공개: "checkbox" },
   수업: { 과목명: "title", 요일: "multi_select", 시작: "rich_text", 종료: "rich_text", 강의실: "rich_text", 교수: "rich_text" },
-  여행: { 제목: "title", 기간: "date", "나라·도시": "rich_text", 위도: "number", 경도: "number", "한 줄 요약": "rich_text", "대표 사진": "files", 공개: "checkbox" },
-  일기: { 제목: "title", 날짜: "date", 기분: "select", 장소: "rich_text", 태그: "multi_select", "대표 사진": "files", 공개: "checkbox" },
+  여행: { 제목: "title", 기간: "date", 나라: "multi_select", "나라·도시": "rich_text", 위도: "number", 경도: "number", "한 줄 요약": "rich_text", "대표 사진": "files", 공개: "checkbox" },
+  일기: { 제목: "title", 날짜: "date", 기분: "select", 나라: "select", 장소: "rich_text", 태그: "multi_select", "대표 사진": "files", 공개: "checkbox" },
+  프로필: { "상태 메시지": "title", "오늘 기분": "select", "대표 사진": "files" },
+  방명록: { 이름: "title", 내용: "rich_text", 승인: "checkbox" },
 };
 
 async function notion(path, body) {
@@ -44,6 +46,15 @@ const byTitle = new Map();
 for (const db of search.results) {
   const t = (db.title || []).map((x) => x.plain_text).join("").trim();
   if (t && !byTitle.has(t)) byTitle.set(t, db);
+}
+// 방금 만든 데이터베이스는 검색에 늦게 잡히므로 상위 페이지 안도 직접 본다
+const parentId = (readEnv().NOTION_PARENT_PAGE || "").replace(/-/g, "").match(/[0-9a-f]{32}/i)?.[0];
+if (parentId) {
+  const children = await notion(`/blocks/${parentId}/children?page_size=100`);
+  for (const block of children.results) {
+    const t = block.type === "child_database" ? block.child_database.title.trim() : "";
+    if (t && !byTitle.has(t)) byTitle.set(t, await notion(`/databases/${block.id}`));
+  }
 }
 
 let ok = true;

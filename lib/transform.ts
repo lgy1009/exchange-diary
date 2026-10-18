@@ -2,19 +2,22 @@
 // 노션을 부르지 않는 순수한 함수만 둔다. (가짜 데이터로 시험할 수 있게: scripts/test-filter.mjs)
 // 열 이름은 DESIGN §3과 같다.
 
+import { codeOf, HOME_COUNTRY, type CountryCode } from "./countries.ts";
 import type {
   Course,
   DateRange,
   DiaryData,
   Entry,
   EventItem,
+  GuestbookEntry,
   LockedEntry,
+  Profile,
   RawDiaryData,
   Trip,
 } from "./types";
 
 type Props = Record<string, unknown>;
-type PageLike = { id: string; properties: Props };
+type PageLike = { id: string; properties: Props; created_time?: string; last_edited_time?: string };
 
 // ---- 노션 열 값 읽기 (열이 없거나 형식이 달라도 오류 대신 빈 값) ----
 type TextPiece = { plain_text?: string };
@@ -88,6 +91,9 @@ export function toTrip(page: PageLike): Trip {
     id: page.id,
     title: textOf(p, "제목"),
     period: dateOf(p, "기간"),
+    countries: multiOf(p, "나라")
+      .map(codeOf)
+      .filter((c): c is CountryCode => c !== null),
     place: textOf(p, "나라·도시"),
     lat: numberOf(p, "위도"),
     lng: numberOf(p, "경도"),
@@ -104,10 +110,36 @@ export function toEntry(page: PageLike): Entry {
     title: textOf(p, "제목"),
     date: dateOf(p, "날짜"),
     mood: selectOf(p, "기분"),
+    country: codeOf(selectOf(p, "나라") ?? "") ?? HOME_COUNTRY,
     place: textOf(p, "장소"),
     tags: multiOf(p, "태그"),
     hasCover: hasFiles(p, "대표 사진"),
     isPublic: checkOf(p, "공개"),
+  };
+}
+
+// 프로필은 가장 최근에 고친 줄 하나만 쓴다
+export function toProfile(pages: PageLike[]): Profile | null {
+  const latest = [...pages].sort((a, b) => (b.last_edited_time ?? "").localeCompare(a.last_edited_time ?? ""))[0];
+  if (!latest) return null;
+  const p = latest.properties;
+  return {
+    id: latest.id,
+    status: textOf(p, "상태 메시지"),
+    mood: selectOf(p, "오늘 기분"),
+    hasPhoto: hasFiles(p, "대표 사진"),
+    updatedAt: latest.last_edited_time ?? "",
+  };
+}
+
+export function toGuestbook(page: PageLike): GuestbookEntry {
+  const p = page.properties;
+  return {
+    id: page.id,
+    name: textOf(p, "이름"),
+    message: textOf(p, "내용"),
+    createdAt: page.created_time ?? "",
+    approved: checkOf(p, "승인"),
   };
 }
 
@@ -127,6 +159,8 @@ export function sortRaw(raw: RawDiaryData): RawDiaryData {
     courses: [...raw.courses],
     trips: [...raw.trips].sort(byDate((t) => t.period, true)), // 여행·일기는 최근 것부터
     entries: [...raw.entries].sort(byDate((e) => e.date, true)),
+    profile: raw.profile,
+    guestbook: [...raw.guestbook].sort((a, b) => b.createdAt.localeCompare(a.createdAt)), // 최신 글부터
   };
 }
 
@@ -135,18 +169,24 @@ export function sortRaw(raw: RawDiaryData): RawDiaryData {
 //   일정·여행 — 공개 체크된 것만
 //   수업      — "공개" 열이 없어서 전부 숨긴다 (강의실·시간은 개인 동선이라서)
 //   일기      — 공개는 그대로, 비공개는 날짜와 자물쇠 표시만 남긴다
+// 누구에게나:
+//   프로필    — 그대로 (홈에 보이는 공개 정보)
+//   방명록    — 승인된 글만 (비밀번호를 풀어도 승인 대기 글은 노션에서만 본다)
 export function lockEntry(e: Entry): LockedEntry {
   return { id: e.id, date: e.date, locked: true };
 }
 
 export function filterForViewer(raw: RawDiaryData, unlocked: boolean): DiaryData {
-  if (unlocked) return { unlocked: true, ...raw };
+  const guestbook = raw.guestbook.filter((g) => g.approved);
+  if (unlocked) return { unlocked: true, ...raw, guestbook };
   return {
     unlocked: false,
     events: raw.events.filter((e) => e.isPublic),
     courses: [],
     trips: raw.trips.filter((t) => t.isPublic),
     entries: raw.entries.map((e) => (e.isPublic ? e : lockEntry(e))),
+    profile: raw.profile,
+    guestbook,
   };
 }
 

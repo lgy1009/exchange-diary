@@ -1,6 +1,8 @@
 // 사이트에서 쓰는 데이터 모양. 노션 원본 모양(복잡함)을 이 단순한 모양으로 바꿔서 쓴다.
 // 날짜는 노션이 준 문자열 그대로 둔다. (예: "2027-03-14" 또는 "2027-03-14T09:00:00.000+01:00")
 
+import type { CountryCode } from "./countries";
+
 export type DateRange = {
   start: string;
   end: string | null; // 하루짜리면 null
@@ -32,11 +34,12 @@ export type Trip = {
   id: string;
   title: string;
   period: DateRange | null;
-  place: string; // 나라·도시
+  countries: CountryCode[]; // 지도 색칠·나라 페이지용 (목록에 없는 나라 이름은 빠진다)
+  place: string; // 도시 (노션 "나라·도시" 열)
   lat: number | null;
   lng: number | null;
   summary: string;
-  hasCover: boolean; // 대표 사진이 있는지 (사진 주소는 만료되므로 여기 담지 않고, 작업 5의 사진 경로로 받는다)
+  hasCover: boolean; // 대표 사진이 있는지 (사진 주소는 만료되므로 여기 담지 않고, 사진 경로로 받는다)
   isPublic: boolean;
 };
 
@@ -46,6 +49,7 @@ export type Entry = {
   title: string;
   date: DateRange | null;
   mood: string | null;
+  country: CountryCode; // 비우면 학교가 있는 나라
   place: string;
   tags: string[];
   hasCover: boolean;
@@ -59,6 +63,24 @@ export type LockedEntry = {
   locked: true;
 };
 
+// ⑤ 프로필 (홈 프로필 카드, 가장 최근 줄 하나) — 누구나 보는 정보
+export type Profile = {
+  id: string;
+  status: string; // 상태 메시지
+  mood: string | null; // 오늘 기분
+  hasPhoto: boolean;
+  updatedAt: string;
+};
+
+// ⑥ 방명록 — 승인된 글만 화면으로 나간다
+export type GuestbookEntry = {
+  id: string;
+  name: string;
+  message: string;
+  createdAt: string;
+  approved: boolean;
+};
+
 // 화면에 넘겨주는 전체 데이터
 export type DiaryData = {
   unlocked: boolean; // 비밀번호를 확인한 요청인지
@@ -66,12 +88,16 @@ export type DiaryData = {
   courses: Course[];
   trips: Trip[];
   entries: (Entry | LockedEntry)[];
+  profile: Profile | null;
+  guestbook: GuestbookEntry[]; // 승인된 글만, 최신 순
 };
 
-// 노션에서 읽어 온 그대로(비공개 포함). 서버 안에서만 쓰고 화면에 바로 넘기지 않는다.
+// 노션에서 읽어 온 그대로(비공개·승인 대기 포함). 서버 안에서만 쓰고 화면에 바로 넘기지 않는다.
 export type RawDiaryData = {
   events: EventItem[];
   courses: Course[];
   trips: Trip[];
   entries: Entry[];
+  profile: Profile | null;
+  guestbook: GuestbookEntry[];
 };
