@@ -12,13 +12,25 @@ const MENU = [
   { href: "/guestbook", label: "방명록", en: "GUEST" },
 ] as const;
 
-function useActive() {
+type IsActive = (href: string) => boolean;
+const NONE: IsActive = () => false;
+
+function useActive(): IsActive {
   const path = usePathname();
   return (href: string) => (href === "/" ? path === "/" : path.startsWith(href));
 }
 
+// 지금 주소(usePathname)는 요청 때만 알 수 있어서, 미리 그리는 화면에는 "선택 없음" 메뉴를 먼저 넣는다.
+// layout.tsx에서 <Suspense fallback={<SideTabsView />}>로 감싼다.
 export function SideTabs() {
-  const isActive = useActive();
+  return <SideTabsView isActive={useActive()} />;
+}
+
+export function BottomNav() {
+  return <BottomNavView isActive={useActive()} />;
+}
+
+export function SideTabsView({ isActive = NONE }: { isActive?: IsActive }) {
   return (
     <nav className="absolute top-5 right-0 hidden w-[72px] md:block">
       <ul className="flex flex-col gap-1.5">
@@ -42,8 +54,7 @@ export function SideTabs() {
   );
 }
 
-export function BottomNav() {
-  const isActive = useActive();
+export function BottomNavView({ isActive = NONE }: { isActive?: IsActive }) {
   return (
     <nav className="fixed inset-x-0 bottom-0 z-10 border-t border-line bg-card/95 backdrop-blur md:hidden">
       <ul className="grid grid-cols-5 pb-[env(safe-area-inset-bottom)]">

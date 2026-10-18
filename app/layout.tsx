@@ -3,7 +3,8 @@ import { DotGothic16, Manrope } from "next/font/google";
 import localFont from "next/font/local";
 import Link from "next/link";
 import { OWNER, SCHOOL } from "@/lib/config";
-import { BottomNav, SideTabs } from "./site-nav";
+import { Suspense } from "react";
+import { BottomNav, BottomNavView, SideTabs, SideTabsView } from "./site-nav";
 import "./globals.css";
 
 // 본문 한글 Pretendard, 영문 제목·숫자 Manrope, 미니홈피 장식 DotGothic16 (영문·숫자만 들어 있다)
@@ -51,10 +52,14 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           </header>
           <div className="relative">
             <main className="md:mr-[76px]">{children}</main>
-            <SideTabs />
+            <Suspense fallback={<SideTabsView />}>
+              <SideTabs />
+            </Suspense>
           </div>
         </div>
-        <BottomNav />
+        <Suspense fallback={<BottomNavView />}>
+          <BottomNav />
+        </Suspense>
       </body>
     </html>
   );

@@ -15,6 +15,11 @@ export function imageSrc(pageId: string, prop: ImageProp = "대표 사진", inde
   return `/api/image?${q}`;
 }
 
+// 본문 사진 블록의 주소
+export function blockImageSrc(blockId: string): string {
+  return `/api/image?block=${encodeURIComponent(blockId)}`;
+}
+
 // 노션 페이지 ID 검사: 32자리 16진수(하이픈 있어도 됨)만 받아서 하이픈 넣은 모양으로 맞춘다
 export function normalizeId(raw: string): string | null {
   const hex = raw.replace(/-/g, "").toLowerCase();
@@ -38,25 +43,60 @@ export async function lookupImage(pageId: string, prop: ImageProp, index: number
   "use cache";
   cacheLife({ stale: 60, revalidate: 1800, expire: 2700 });
 
-  // 없는 페이지(404·400)만 "없음"으로 저장하고, 노션 일시 장애는 오류로 올려 보내 저장하지 않는다
-  const page = await notionGet<NotionPageResponse>(`/pages/${pageId}`).catch((e: unknown) => {
+  const page = await ourPage(pageId);
+  if (!page) return { ok: false, reason: "not-found" };
+
+  const file = page.properties?.[prop]?.files?.[index];
+  const url = fileUrl(file);
+  if (!url) return { ok: false, reason: "not-found" };
+  return { ok: true, url, isPublic: isPublicPage(page) };
+}
+
+// 본문 사진 블록. 블록이 속한 페이지가 우리 데이터베이스의 페이지일 때만, 그 페이지의 공개 여부를 따른다.
+export async function lookupBlockImage(blockId: string): Promise<ImageLookup> {
+  "use cache";
+  cacheLife({ stale: 60, revalidate: 1800, expire: 2700 });
+
+  const block = await getOrNull<{ type?: string; image?: NotionFile; parent?: { type?: string; page_id?: string } }>(
+    `/blocks/${blockId}`,
+  );
+  if (!block || block.type !== "image" || block.parent?.type !== "page_id" || !block.parent.page_id) {
+    return { ok: false, reason: "not-found" };
+  }
+  const page = await ourPage(block.parent.page_id);
+  if (!page) return { ok: false, reason: "not-found" };
+  const url = fileUrl(block.image);
+  if (!url) return { ok: false, reason: "not-found" };
+  return { ok: true, url, isPublic: isPublicPage(page) };
+}
+
+// ---- 공통 ----
+
+// 없는 페이지(404·400)만 null로 돌려주고, 노션 일시 장애는 오류로 올려 보내 캐시에 남기지 않는다
+function getOrNull<T>(path: string): Promise<T | null> {
+  return notionGet<T>(path).catch((e: unknown) => {
     if (/HTTP (400|404)/.test(String(e))) return null;
     throw e;
   });
-  if (!page) return { ok: false, reason: "not-found" };
+}
 
-  // 우리 사이트의 여행·일기·프로필 데이터베이스에 속한 페이지만 허용한다
+// 우리 사이트의 여행·일기·프로필 데이터베이스에 속한 페이지만 돌려준다
+async function ourPage(pageId: string): Promise<NotionPageResponse | null> {
+  const page = await getOrNull<NotionPageResponse>(`/pages/${pageId}`);
+  if (!page) return null;
   const dbs = await findDatabases();
   const allowed = [dbs.trips?.id, dbs.entries?.id, dbs.profile?.id].filter(Boolean).map((id) => id!.replace(/-/g, ""));
   const parent = page.parent?.database_id?.replace(/-/g, "");
-  if (!parent || !allowed.includes(parent)) return { ok: false, reason: "not-found" };
+  return parent && allowed.includes(parent) ? page : null;
+}
 
-  const file = page.properties?.[prop]?.files?.[index];
-  const url = file?.type === "external" ? file.external?.url : file?.file?.url;
-  if (!url || !url.startsWith("https://")) return { ok: false, reason: "not-found" };
-
-  // "공개" 열이 없는 데이터베이스(프로필)는 공개로 본다. 있으면 체크된 것만 공개.
+// "공개" 열이 없는 데이터베이스(프로필)는 공개로 본다. 있으면 체크된 것만 공개.
+function isPublicPage(page: NotionPageResponse): boolean {
   const publicProp = page.properties?.["공개"];
-  const isPublic = publicProp ? publicProp.checkbox === true : true;
-  return { ok: true, url, isPublic };
+  return publicProp ? publicProp.checkbox === true : true;
+}
+
+function fileUrl(file: NotionFile | undefined): string | null {
+  const url = file?.type === "external" ? file.external?.url : file?.file?.url;
+  return url && url.startsWith("https://") ? url : null;
 }
