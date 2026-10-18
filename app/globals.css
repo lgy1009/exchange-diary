@@ -1,26 +1,56 @@
 @import "tailwindcss";
 
+/* 미니멀 매거진 플래너 (DESIGN §6) — 흰 바탕, 가는 선, 포인트 색 한 가지, 그림자 없음 */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --paper: #ffffff;
+  --ink: #111111;
+  --muted: #6b6b6b;
+  --line: #ebebeb;
+  --soft: #f6f5f3; /* 사진 자리 등 아주 옅은 바탕 */
+  --accent: #d9480f; /* lib/config.ts의 ACCENT_COLOR와 같은 값 */
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-paper: var(--paper);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-soft: var(--soft);
+  --color-accent: var(--accent);
+  --font-sans: var(--font-pretendard), system-ui, sans-serif;
+  --font-display: var(--font-manrope), var(--font-pretendard), sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  background: var(--paper);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  word-break: keep-all;
+}
+
+/* 영문·숫자 큰 제목 */
+.display {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+}
+
+/* 작은 대문자 라벨 (섹션 이름 등) */
+.eyebrow {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.tabular {
+  font-family: var(--font-display);
+  font-variant-numeric: tabular-nums;
 }
