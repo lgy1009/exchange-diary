@@ -93,6 +93,22 @@ assert.ok(!JSON.stringify(open.guestbook).includes("스팸봇"), "비밀번호�
 
 console.log("✅ 가짜 데이터 시험 통과: 잠긴 상태에서는 공개 항목만, 비공개 일기는 날짜·자물쇠만, 방명록은 승인된 글만 나갑니다.");
 
+// ---- 방명록 검사 규칙 ----
+const { checkGuestbook, allowPost } = await import("../lib/guestbook.ts");
+assert.equal(checkGuestbook({ name: "엄마", message: "밥 잘 챙겨 먹어" }).ok, true);
+assert.equal(checkGuestbook({ name: "  ", message: "내용" }).ok, false, "이름 비면 거절");
+assert.equal(checkGuestbook({ name: "a".repeat(21), message: "내용" }).ok, false, "이름 21자 거절");
+assert.equal(checkGuestbook({ name: "민지", message: "가".repeat(201) }).ok, false, "글 201자 거절");
+assert.equal(checkGuestbook({ name: "광고", message: "여기 보세요 https://spam.example" }).ok, false, "링크 거절");
+assert.equal(checkGuestbook({ name: "광고", message: "cheap-pills.shop 방문" }).ok, false, "주소 모양 거절");
+assert.equal(checkGuestbook({ name: "봇", message: "hi", website: "x" }).ok, "bot", "숨은 칸이 채워지면 로봇");
+assert.equal(checkGuestbook({ name: "<b>민지</b>", message: "<script>alert(1)</script>" }).ok, true, "HTML 글자는 글자로만 저장(화면에서 해석 안 함)");
+assert.equal(checkGuestbook({ name: "민\u0000지", message: "안​녕" }).value.name, "민지", "보이지 않는 문자 제거");
+const t0 = 1_000_000;
+assert.deepEqual([1, 2, 3, 4].map((i) => allowPost("ip-test", t0 + i)), [true, true, true, false], "10분에 3건까지");
+assert.equal(allowPost("ip-test", t0 + 11 * 60 * 1000), true, "10분 지나면 다시 가능");
+console.log("✅ 방명록 검사 규칙 시험 통과: 길이·링크·로봇·도배 제한");
+
 // ---- 실제 노션 데이터 (--live) ----
 if (process.argv.includes("--live")) {
   const env = {};
