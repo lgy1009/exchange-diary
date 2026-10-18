@@ -4,7 +4,7 @@
 import { nameOf, type CountryCode } from "./countries";
 import { dayOf } from "./dates";
 import { isLocked } from "./transform";
-import type { DiaryData } from "./types";
+import type { DiaryData, Trip } from "./types";
 
 export type Stamp = {
   code: CountryCode;
@@ -46,4 +46,16 @@ export function travelStats(data: Pick<DiaryData, "trips" | "entries">): TravelS
 
   const stamps = [...map.values()].sort((a, b) => (a.firstVisit ?? "9999").localeCompare(b.firstVisit ?? "9999"));
   return { stamps, countryCount: stamps.length, cityCount: cities.size, entryCount };
+}
+
+// 지도 색칠용: 나라 코드 → 여행·일기 수
+export function visitsOf(stats: TravelStats): Record<string, number> {
+  return Object.fromEntries(stats.stamps.map((s) => [s.code, s.trips + s.entries]));
+}
+
+// 지도 점선용: 좌표가 적힌 여행
+export function tripPoints(trips: Trip[]): { lat: number; lng: number; title: string }[] {
+  return trips
+    .filter((t) => t.lat !== null && t.lng !== null)
+    .map((t) => ({ lat: t.lat!, lng: t.lng!, title: t.place || t.title }));
 }

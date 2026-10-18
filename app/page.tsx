@@ -5,12 +5,13 @@ import { cacheLife } from "next/cache";
 import { OWNER, REVALIDATE_SECONDS, SCHOOL } from "@/lib/config";
 import { getDiaryData } from "@/lib/diary-data";
 import { dayOf, semesterState, short, todayIn } from "@/lib/dates";
-import { travelStats, type TravelStats } from "@/lib/stats";
+import { travelStats, tripPoints, visitsOf, type TravelStats } from "@/lib/stats";
 import { isLocked } from "@/lib/transform";
 import { isUnlocked } from "@/lib/viewer";
 import type { DiaryData, Profile } from "@/lib/types";
 import { LocalClock } from "./local-clock";
 import { NotionImage } from "./notion-image";
+import { EuropeMap, type MapPoint } from "./europe-map";
 
 export default function HomePage() {
   return (
@@ -36,7 +37,7 @@ async function HomeContent({ unlocked }: { unlocked: boolean }) {
   return (
     <div className="grid gap-2.5 sm:grid-cols-2 md:grid-cols-[minmax(0,1fr)_minmax(0,1.25fr)_minmax(0,1.25fr)]">
       <ProfileCard profile={data.profile} today={today} />
-      <CountriesCard stats={stats} />
+      <CountriesCard stats={stats} points={tripPoints(data.trips)} />
       <div className="flex flex-col gap-2.5 sm:col-span-2 md:col-span-1">
         <PhotosCard data={data} />
         <DiaryCard data={data} />
@@ -92,8 +93,8 @@ function ProfileCard({ profile, today }: { profile: Profile | null; today: strin
   );
 }
 
-// ---- ② 다녀온 나라 (지도는 작업 7에서 이 카드에 들어간다) ----
-function CountriesCard({ stats }: { stats: TravelStats }) {
+// ---- ② 다녀온 나라 (지도 + 도장) ----
+function CountriesCard({ stats, points }: { stats: TravelStats; points: MapPoint[] }) {
   return (
     <section className="card flex flex-col">
       <div className="flex items-baseline justify-between">
@@ -107,8 +108,8 @@ function CountriesCard({ stats }: { stats: TravelStats }) {
         <Count n={stats.cityCount} unit="cities" />
         <Count n={stats.entryCount} unit="diaries" />
       </div>
-      <div className="mt-3 flex min-h-36 flex-1 items-center justify-center rounded-[10px] bg-sea-pale p-4 text-center text-xs text-sea">
-        유럽 지도가 들어갈 자리
+      <div className="mt-3 flex-1">
+        <EuropeMap visits={visitsOf(stats)} points={points} />
       </div>
       <div className="mt-3 flex flex-wrap gap-1.5">
         {stats.stamps.length === 0 && <p className="label">아직 찍힌 도장이 없어요.</p>}

@@ -16,6 +16,8 @@ export const SCHOOL = {
   semesterStart: "2027-02-01", // 학기 시작일 (YYYY-MM-DD)
   semesterEnd: "2027-07-31", // 학기 종료일 (YYYY-MM-DD)
   timeZone: "Europe/Madrid", // 말라가 시간대
+  lat: 36.7213, // 학교 위치 (지도 핀)
+  lng: -4.4214,
 } as const;
 
 // 말라가 색 (DESIGN §6). 실제 화면 색은 app/globals.css에서 같은 값으로 쓴다.

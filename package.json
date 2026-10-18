@@ -9,7 +9,8 @@
     "lint": "eslint",
     "notion:setup": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/setup-notion.mjs",
     "notion:check": "node scripts/check-notion.mjs",
-    "test:filter": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/test-filter.mjs"
+    "test:filter": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/test-filter.mjs",
+    "map:build": "node scripts/build-europe-map.mjs"
   },
   "dependencies": {
     "next": "16.4.2",
@@ -18,12 +19,17 @@
   },
   "devDependencies": {
     "@tailwindcss/turbopack": "^4",
+    "@types/d3-geo": "^3.1.1",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/topojson-client": "^3.1.5",
+    "d3-geo": "^3.1.1",
     "eslint": "^9",
     "eslint-config-next": "16.4.2",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "topojson-client": "^3.1.0",
+    "typescript": "^5",
+    "world-atlas": "^2.0.2"
   }
 }
