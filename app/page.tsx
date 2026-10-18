@@ -1,17 +1,19 @@
-// 홈 (DESIGN §1) — 큰 제목, 학기 진행률, 이번 주, 가장 최근 여행 1건, 최근 일기 3건
+// 홈 (미니홈피, DESIGN §1·§6) — 프로필 | 다녀온 나라 | 사진·최근 일기·방명록
 import Link from "next/link";
 import { Suspense } from "react";
 import { cacheLife } from "next/cache";
-import { REVALIDATE_SECONDS, SCHOOL } from "@/lib/config";
+import { OWNER, REVALIDATE_SECONDS, SCHOOL } from "@/lib/config";
 import { getDiaryData } from "@/lib/diary-data";
-import { covers, dayOf, rangeLabel, semesterState, short, todayIn, weekOf, weekdayOf } from "@/lib/dates";
+import { dayOf, semesterState, short, todayIn } from "@/lib/dates";
+import { travelStats, type TravelStats } from "@/lib/stats";
 import { isLocked } from "@/lib/transform";
 import { isUnlocked } from "@/lib/viewer";
-import type { Course, EventItem, Trip } from "@/lib/types";
+import type { DiaryData, Profile } from "@/lib/types";
+import { LocalClock } from "./local-clock";
 
 export default function HomePage() {
   return (
-    <Suspense fallback={<p className="py-24 text-sm text-muted">불러오는 중…</p>}>
+    <Suspense fallback={<p className="card text-sm text-muted">불러오는 중…</p>}>
       <HomeLoader />
     </Suspense>
   );
@@ -28,191 +30,179 @@ async function HomeContent({ unlocked }: { unlocked: boolean }) {
 
   const data = await getDiaryData(unlocked);
   const today = todayIn(SCHOOL.timeZone);
-  const week = weekOf(today);
-  const trip = pickTrip(data.trips, today);
-  const recent = data.entries.slice(0, 3);
+  const stats = travelStats(data);
 
   return (
-    <div className="flex flex-col gap-16 pt-6 sm:gap-24 sm:pt-12">
-      <Hero today={today} />
-
-      <section>
-        <SectionHead en="This Week" ko="이번 주" />
-        <Week days={week} today={today} events={data.events} courses={data.courses} />
-        {!unlocked && <p className="mt-3 text-xs text-muted">수업과 비공개 일정은 잠금 해제 후 보입니다.</p>}
-      </section>
-
-      <section>
-        <SectionHead en={trip && dayOf(trip.period?.start ?? "") > today ? "Next Trip" : "Latest Trip"} ko="여행" more="/trips" />
-        {trip ? <TripFeature trip={trip} /> : <Empty>아직 공개된 여행이 없습니다.</Empty>}
-      </section>
-
-      <section>
-        <SectionHead en="Recent Diary" ko="최근 일기" more="/diary" />
-        {recent.length === 0 ? (
-          <Empty>아직 일기가 없습니다.</Empty>
-        ) : (
-          <ul className="grid gap-x-6 gap-y-10 sm:grid-cols-3">
-            {recent.map((e) => (
-              <li key={e.id}>
-                <Link href={`/diary/${e.id}`} className="group block">
-                  {isLocked(e) ? (
-                    <>
-                      <div className="flex aspect-[4/3] items-center justify-center rounded-[2px] bg-soft text-2xl">🔒</div>
-                      <p className="eyebrow mt-4 !text-accent">{e.date ? short(dayOf(e.date.start)) : ""}</p>
-                      <p className="mt-1 text-muted">비공개 일기</p>
-                    </>
-                  ) : (
-                    <>
-                      <Cover label={e.title} />
-                      <p className="eyebrow mt-4 !text-accent">
-                        {e.date ? short(dayOf(e.date.start)) : ""}
-                        {e.mood ? `  ·  ${e.mood}` : ""}
-                      </p>
-                      <p className="mt-1 text-lg font-semibold leading-snug group-hover:text-accent">{e.title}</p>
-                      {e.place && <p className="mt-1 text-sm text-muted">{e.place}</p>}
-                    </>
-                  )}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        )}
-      </section>
+    <div className="grid gap-2.5 sm:grid-cols-2 md:grid-cols-[minmax(0,1fr)_minmax(0,1.25fr)_minmax(0,1.25fr)]">
+      <ProfileCard profile={data.profile} today={today} />
+      <CountriesCard stats={stats} />
+      <div className="flex flex-col gap-2.5 sm:col-span-2 md:col-span-1">
+        <PhotosCard data={data} />
+        <DiaryCard data={data} />
+        <GuestbookCard data={data} />
+      </div>
     </div>
   );
 }
 
-// ---- 큰 제목 + 학기 진행률 ----
-function Hero({ today }: { today: string }) {
+// ---- ① 프로필 ----
+function ProfileCard({ profile, today }: { profile: Profile | null; today: string }) {
   const s = semesterState(SCHOOL.semesterStart, SCHOOL.semesterEnd, today);
-  const percent = s.phase === "during" ? s.percent : s.phase === "after" ? 100 : 0;
+  const dday = s.phase === "before" ? `D-${s.daysLeft}` : s.phase === "during" ? `D+${s.day}` : "FIN.";
   return (
-    <section>
-      <p className="eyebrow">
-        {SCHOOL.name}
-        {SCHOOL.country ? ` · ${SCHOOL.country}` : ""}
-      </p>
-      <h1 className="display mt-4 text-[clamp(3rem,11vw,8.5rem)]">
-        ONE
-        <br />
-        SEMESTER<span className="text-accent">.</span>
-      </h1>
-      <div className="mt-10 flex items-end justify-between gap-4 border-b border-ink pb-3">
-        <p className="tabular text-sm">
-          {short(SCHOOL.semesterStart)} — {short(SCHOOL.semesterEnd)}
-        </p>
-        <p className="tabular text-sm">
-          {s.phase === "before" && (
-            <>
-              출발까지 <b className="text-accent">D-{s.daysLeft}</b>
-            </>
-          )}
-          {s.phase === "during" && (
-            <>
-              <b className="text-accent">{s.day}</b>일째 / {s.total}일 · {s.percent}%
-            </>
-          )}
-          {s.phase === "after" && "학기 끝 · 수고했어요"}
-        </p>
+    <section className="card flex flex-col">
+      {/* 휴대폰: 작은 사진 옆에 이름 / 큰 화면: 큰 사진 아래 이름 */}
+      <div className="flex items-center gap-3 sm:block">
+        <div className="flex aspect-square w-24 shrink-0 items-end rounded-[10px] bg-sand p-2 text-[10px] text-[#7a5532] sm:aspect-[4/3] sm:w-auto sm:p-3 sm:text-xs">
+          {/* 대표 사진은 작업 6(사진 경로)에서 넣는다 */}
+          {profile?.hasPhoto ? "대표 사진 (곧 보여요)" : "대표 사진"}
+        </div>
+        <div className="sm:mt-3">
+          <p className="text-lg font-semibold">{OWNER.name} in Málaga</p>
+          <p className="label mt-0.5">{SCHOOL.nameKo}</p>
+        </div>
       </div>
-      <div className="h-[3px] bg-line">
-        <div className="h-full bg-accent" style={{ width: `${percent}%` }} />
+      {profile?.status && <p className="mt-3 leading-snug">{profile.status}</p>}
+      {profile?.mood && (
+        <p className="mt-3">
+          <span className="inline-block rounded-full bg-pink-pale px-3 py-0.5 text-sm text-pink">오늘 기분 {profile.mood}</span>
+        </p>
+      )}
+      <dl className="mt-auto grid grid-cols-2 gap-2 pt-5 text-center">
+        <div className="rounded-[10px] bg-paper py-2">
+          <dt className="label">말라가 지금</dt>
+          <dd className="dot mt-0.5 text-lg text-sea">
+            <LocalClock timeZone={SCHOOL.timeZone} />
+          </dd>
+        </div>
+        <div className="rounded-[10px] bg-paper py-2">
+          <dt className="label">{s.phase === "before" ? "출발까지" : s.phase === "during" ? "교환학생" : "학기"}</dt>
+          <dd className="dot mt-0.5 text-lg text-terracotta">{dday}</dd>
+        </div>
+      </dl>
+    </section>
+  );
+}
+
+// ---- ② 다녀온 나라 (지도는 작업 7에서 이 카드에 들어간다) ----
+function CountriesCard({ stats }: { stats: TravelStats }) {
+  return (
+    <section className="card flex flex-col">
+      <div className="flex items-baseline justify-between">
+        <h2 className="label">다녀온 나라</h2>
+        <Link href="/map" className="label hover:text-sea">
+          지도 보기 →
+        </Link>
+      </div>
+      <div className="mt-3 grid grid-cols-3 gap-2 text-center">
+        <Count n={stats.countryCount} unit="countries" />
+        <Count n={stats.cityCount} unit="cities" />
+        <Count n={stats.entryCount} unit="diaries" />
+      </div>
+      <div className="mt-3 flex min-h-36 flex-1 items-center justify-center rounded-[10px] bg-sea-pale p-4 text-center text-xs text-sea">
+        유럽 지도가 들어갈 자리
+      </div>
+      <div className="mt-3 flex flex-wrap gap-1.5">
+        {stats.stamps.length === 0 && <p className="label">아직 찍힌 도장이 없어요.</p>}
+        {stats.stamps.map((s) => (
+          <Link key={s.code} href={`/map/${s.code.toLowerCase()}`} className="stamp hover:bg-terracotta hover:text-white" title={s.name}>
+            {s.code} {s.firstVisit ? short(s.firstVisit) : ""}
+          </Link>
+        ))}
       </div>
     </section>
   );
 }
 
-// ---- 이번 주 (월~일) ----
-function Week({ days, today, events, courses }: { days: string[]; today: string; events: EventItem[]; courses: Course[] }) {
+function Count({ n, unit }: { n: number; unit: string }) {
   return (
-    <ol className="grid border-t border-line sm:grid-cols-7">
-      {days.map((day) => {
-        const wd = weekdayOf(day);
-        const dayEvents = events.filter((e) => e.date && covers(e.date.start, e.date.end, day));
-        const dayCourses = courses.filter((c) => c.days.includes(wd)).sort((a, b) => a.start.localeCompare(b.start));
-        const isToday = day === today;
-        return (
-          <li
-            key={day}
-            className="flex gap-4 border-b border-line py-3 sm:min-h-40 sm:flex-col sm:gap-2 sm:border-b-0 sm:border-r sm:px-3 sm:py-4 sm:last:border-r-0"
-          >
-            <p className={`w-24 shrink-0 whitespace-nowrap sm:w-auto ${isToday ? "text-accent" : ""}`}>
-              <span className="tabular text-lg font-bold">{short(day)}</span>{" "}
-              <span className="text-xs">{wd}</span>
-              {isToday && <span className="ml-1 inline-block h-1.5 w-1.5 rounded-full bg-accent align-middle" aria-label="오늘" />}
-            </p>
-            <ul className="flex min-w-0 flex-1 flex-col gap-1.5 text-sm">
-              {dayEvents.map((e) => (
-                <li key={e.id} className="border-l-2 border-accent pl-2 leading-snug">
-                  {e.name}
-                  {e.kind && <span className="ml-1 text-xs text-muted">{e.kind}</span>}
-                </li>
-              ))}
-              {dayCourses.map((c) => (
-                <li key={c.id} className="border-l-2 border-line pl-2 leading-snug text-muted">
-                  <span className="tabular text-xs">{c.start}</span> {c.name}
-                </li>
-              ))}
-              {dayEvents.length + dayCourses.length === 0 && <li className="text-line sm:hidden">—</li>}
-            </ul>
-          </li>
-        );
-      })}
-    </ol>
+    <div>
+      <p className="display text-2xl text-sea">{n}</p>
+      <p className="dot text-[10px] text-muted">{unit}</p>
+    </div>
   );
 }
 
-// ---- 여행 1건 (오늘 이전에 시작한 것 중 가장 최근, 없으면 가장 가까운 예정) ----
-function pickTrip(trips: Trip[], today: string): Trip | null {
-  const dated = trips.filter((t) => t.period);
-  const past = dated.find((t) => dayOf(t.period!.start) <= today);
-  if (past) return past;
-  return [...dated].sort((a, b) => a.period!.start.localeCompare(b.period!.start))[0] ?? trips[0] ?? null;
-}
+// ---- ③ 사진 (공개 여행·일기 중 대표 사진이 있는 것) ----
+const TILE_COLORS = ["bg-sea-pale", "bg-sand", "bg-pink-pale"];
 
-function TripFeature({ trip }: { trip: Trip }) {
+function PhotosCard({ data }: { data: DiaryData }) {
+  const withPhoto = [
+    ...data.trips.filter((t) => t.hasCover).map((t) => ({ id: t.id, title: t.title, href: `/trips/${t.id}` })),
+    ...data.entries
+      .filter((e) => !isLocked(e) && e.hasCover)
+      .map((e) => ({ id: e.id, title: isLocked(e) ? "" : e.title, href: `/diary/${e.id}` })),
+  ].slice(0, 3);
   return (
-    <Link href={`/trips/${trip.id}`} className="group grid gap-6 sm:grid-cols-[3fr_2fr] sm:gap-10">
-      <Cover label={trip.place || trip.title} wide />
-      <div className="flex flex-col justify-end">
-        <p className="eyebrow !text-accent">{trip.period ? rangeLabel(trip.period.start, trip.period.end) : ""}</p>
-        <h3 className="mt-2 text-2xl font-bold leading-tight group-hover:text-accent sm:text-3xl">{trip.title}</h3>
-        {trip.place && <p className="mt-2 text-muted">{trip.place}</p>}
-        {trip.summary && <p className="mt-4 leading-relaxed">{trip.summary}</p>}
-      </div>
-    </Link>
-  );
-}
-
-// ---- 공통 조각 ----
-function SectionHead({ en, ko, more }: { en: string; ko: string; more?: string }) {
-  return (
-    <div className="mb-6 flex items-baseline justify-between">
-      <h2 className="flex items-baseline gap-3">
-        <span className="display text-3xl sm:text-4xl">{en}</span>
-        <span className="text-sm text-muted">{ko}</span>
-      </h2>
-      {more && (
-        <Link href={more} className="eyebrow hover:text-accent">
-          All →
+    <section className="card">
+      <div className="mb-2 flex items-baseline justify-between">
+        <h2 className="label">사진</h2>
+        <Link href="/photos" className="label hover:text-sea">
+          더 보기 →
         </Link>
-      )}
-    </div>
+      </div>
+      <div className="grid grid-cols-3 gap-1.5">
+        {[0, 1, 2].map((i) => {
+          const p = withPhoto[i];
+          const tile = `aspect-square rounded-lg ${TILE_COLORS[i]}`;
+          return p ? (
+            <Link key={p.id} href={p.href} className={`${tile} flex items-end p-1.5 text-[10px] leading-tight text-ink/60`} title={p.title}>
+              <span className="line-clamp-2">{p.title}</span>
+            </Link>
+          ) : (
+            <div key={i} className={tile} />
+          );
+        })}
+      </div>
+    </section>
   );
 }
 
-// 사진 자리 (실제 사진은 작업 5의 사진 경로가 생기면 넣는다)
-function Cover({ label, wide = false }: { label: string; wide?: boolean }) {
+// ---- ④ 최근 일기 ----
+function DiaryCard({ data }: { data: DiaryData }) {
+  const recent = data.entries.slice(0, 3);
   return (
-    <div
-      className={`flex items-end overflow-hidden rounded-[2px] bg-soft p-5 ${wide ? "aspect-[3/2]" : "aspect-[4/3]"}`}
-    >
-      <span className="display line-clamp-2 text-3xl text-ink/15 sm:text-4xl">{label}</span>
-    </div>
+    <section className="card">
+      <div className="mb-2 flex items-baseline justify-between">
+        <h2 className="label">최근 일기</h2>
+        <Link href="/diary" className="label hover:text-sea">
+          더 보기 →
+        </Link>
+      </div>
+      {recent.length === 0 && <p className="text-sm text-muted">아직 일기가 없어요.</p>}
+      <ul className="flex flex-col gap-1 text-sm">
+        {recent.map((e) => (
+          <li key={e.id}>
+            <Link href={`/diary/${e.id}`} className="flex gap-2 hover:text-sea">
+              <span className="dot w-10 shrink-0 text-terracotta">{e.date ? short(dayOf(e.date.start)) : ""}</span>
+              <span className="truncate">{isLocked(e) ? "🔒 비공개 일기" : e.title}</span>
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </section>
   );
 }
 
-function Empty({ children }: { children: React.ReactNode }) {
-  return <p className="border-t border-line py-8 text-sm text-muted">{children}</p>;
+// ---- ⑤ 방명록 (승인된 글만 들어온다) ----
+function GuestbookCard({ data }: { data: DiaryData }) {
+  const recent = data.guestbook.slice(0, 2);
+  return (
+    <section className="card">
+      <div className="mb-2 flex items-baseline justify-between">
+        <h2 className="label">방명록</h2>
+        <Link href="/guestbook" className="label hover:text-sea">
+          남기기 →
+        </Link>
+      </div>
+      {recent.length === 0 && <p className="text-sm text-muted">첫 방명록을 남겨 주세요.</p>}
+      <ul className="flex flex-col gap-1 text-sm">
+        {recent.map((g) => (
+          <li key={g.id} className="truncate">
+            <span className="text-sea">{g.name}</span> {g.message}
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
 }

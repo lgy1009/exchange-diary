@@ -1,6 +1,12 @@
 // 교환학생 다이어리 설정 — 바꾸고 싶은 값은 여기서만 고친다.
 // (비밀 값은 여기에 쓰지 않는다. 비밀 값은 .env에만 둔다.)
 
+// 홈페이지 주인 (머리글·프로필 카드에 보인다)
+export const OWNER = {
+  name: "가영",
+  en: "GAYOUNG",
+} as const;
+
 export const SCHOOL = {
   name: "Universidad de Málaga", // 학교 이름
   nameKo: "말라가 대학교",

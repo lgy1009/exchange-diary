@@ -1,24 +1,41 @@
 @import "tailwindcss";
 
-/* 미니멀 매거진 플래너 (DESIGN §6) — 흰 바탕, 가는 선, 포인트 색 한 가지, 그림자 없음 */
+/* 현대적인 미니홈피 · 말라가 색 (DESIGN §6) — 둥근 카드, 그림자 없음 */
 :root {
-  --paper: #ffffff;
-  --ink: #111111;
-  --muted: #6b6b6b;
-  --line: #ebebeb;
-  --soft: #f6f5f3; /* 사진 자리 등 아주 옅은 바탕 */
-  --accent: #d9480f; /* 작업 5에서 말라가 색으로 바꾼다 */
+  --paper: #f6efe2; /* 바탕: 흰 벽 + 햇살 */
+  --card: #fffdf8; /* 카드 바탕 */
+  --ink: #2a2620; /* 본문 글자 */
+  --muted: #9a8a76; /* 라벨·보조 글자 */
+  --line: #ece3d3; /* 가는 선 */
+  --sea: #1d6a96; /* 지중해 블루: 중심 색 */
+  --sea-soft: #8fb8cf; /* 선택 안 된 탭 */
+  --sea-pale: #d9ebf3; /* 지도 바다 */
+  --terracotta: #c8643b; /* 알카사바: 날짜·도장 */
+  --terracotta-soft: #e8a07a;
+  --sand: #e8c48a; /* 해변 모래: 사진 자리 */
+  --sand-pale: #f3ead9; /* 안 간 나라 */
+  --pink: #d64f86; /* 부겐빌레아: 작은 포인트 */
+  --pink-pale: #f8dfe8;
 }
 
 @theme inline {
   --color-paper: var(--paper);
+  --color-card: var(--card);
   --color-ink: var(--ink);
   --color-muted: var(--muted);
   --color-line: var(--line);
-  --color-soft: var(--soft);
-  --color-accent: var(--accent);
+  --color-sea: var(--sea);
+  --color-sea-soft: var(--sea-soft);
+  --color-sea-pale: var(--sea-pale);
+  --color-terracotta: var(--terracotta);
+  --color-terracotta-soft: var(--terracotta-soft);
+  --color-sand: var(--sand);
+  --color-sand-pale: var(--sand-pale);
+  --color-pink: var(--pink);
+  --color-pink-pale: var(--pink-pale);
   --font-sans: var(--font-pretendard), system-ui, sans-serif;
   --font-display: var(--font-manrope), var(--font-pretendard), sans-serif;
+  --font-dot: var(--font-dotgothic), var(--font-pretendard), monospace;
 }
 
 html {
@@ -32,25 +49,42 @@ body {
   word-break: keep-all;
 }
 
-/* 영문·숫자 큰 제목 */
+/* 영문·숫자 제목 */
 .display {
   font-family: var(--font-display);
   font-weight: 800;
-  letter-spacing: -0.03em;
-  line-height: 0.95;
+  letter-spacing: -0.02em;
 }
 
-/* 작은 대문자 라벨 (섹션 이름 등) */
-.eyebrow {
-  font-family: var(--font-display);
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+/* 미니홈피 장식 글꼴 (TODAY, 탭, D-day 등에만) */
+.dot {
+  font-family: var(--font-dot);
+  letter-spacing: 0.02em;
+}
+
+/* 둥근 카드 */
+.card {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 16px;
+}
+
+/* 카드 안 작은 라벨 */
+.label {
+  font-size: 0.75rem;
   color: var(--muted);
 }
 
-.tabular {
-  font-family: var(--font-display);
-  font-variant-numeric: tabular-nums;
+/* 여권 도장 모양 칩 */
+.stamp {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border: 1px dashed var(--terracotta);
+  color: var(--terracotta);
+  border-radius: 999px;
+  padding: 1px 9px;
+  font-size: 0.72rem;
+  font-family: var(--font-dot);
+  white-space: nowrap;
 }
