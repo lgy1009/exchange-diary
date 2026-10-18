@@ -10,6 +10,7 @@ import { isLocked } from "@/lib/transform";
 import { isUnlocked } from "@/lib/viewer";
 import type { DiaryData, Profile } from "@/lib/types";
 import { LocalClock } from "./local-clock";
+import { NotionImage } from "./notion-image";
 
 export default function HomePage() {
   return (
@@ -53,10 +54,17 @@ function ProfileCard({ profile, today }: { profile: Profile | null; today: strin
     <section className="card flex flex-col">
       {/* 휴대폰: 작은 사진 옆에 이름 / 큰 화면: 큰 사진 아래 이름 */}
       <div className="flex items-center gap-3 sm:block">
-        <div className="flex aspect-square w-24 shrink-0 items-end rounded-[10px] bg-sand p-2 text-[10px] text-[#7a5532] sm:aspect-[4/3] sm:w-auto sm:p-3 sm:text-xs">
-          {/* 대표 사진은 작업 6(사진 경로)에서 넣는다 */}
-          {profile?.hasPhoto ? "대표 사진 (곧 보여요)" : "대표 사진"}
-        </div>
+        {profile?.hasPhoto ? (
+          <NotionImage
+            pageId={profile.id}
+            alt={`${OWNER.name} 대표 사진`}
+            className="aspect-square w-24 shrink-0 rounded-[10px] bg-sand sm:aspect-[4/3] sm:w-full"
+          />
+        ) : (
+          <div className="flex aspect-square w-24 shrink-0 items-end rounded-[10px] bg-sand p-2 text-[10px] text-[#7a5532] sm:aspect-[4/3] sm:w-auto sm:p-3 sm:text-xs">
+            노션 프로필에 대표 사진을 넣어 주세요
+          </div>
+        )}
         <div className="sm:mt-3">
           <p className="text-lg font-semibold">{OWNER.name} in Málaga</p>
           <p className="label mt-0.5">{SCHOOL.nameKo}</p>
@@ -146,8 +154,8 @@ function PhotosCard({ data }: { data: DiaryData }) {
           const p = withPhoto[i];
           const tile = `aspect-square rounded-lg ${TILE_COLORS[i]}`;
           return p ? (
-            <Link key={p.id} href={p.href} className={`${tile} flex items-end p-1.5 text-[10px] leading-tight text-ink/60`} title={p.title}>
-              <span className="line-clamp-2">{p.title}</span>
+            <Link key={p.id} href={p.href} className={`${tile} overflow-hidden`} title={p.title}>
+              <NotionImage pageId={p.id} alt={p.title} className="h-full w-full" />
             </Link>
           ) : (
             <div key={i} className={tile} />

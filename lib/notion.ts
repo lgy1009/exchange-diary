@@ -46,6 +46,11 @@ async function notion<T>(path: string, body?: unknown): Promise<T> {
   return (await res.json()) as T;
 }
 
+// 페이지 하나 등 GET으로 읽는 요청
+export function notionGet<T>(path: string): Promise<T> {
+  return notion<T>(path);
+}
+
 // 연동이 볼 수 있는 데이터베이스 중 이름이 맞는 것을 찾는다 (ID를 따로 적을 필요가 없다)
 export async function findDatabases(): Promise<Partial<Record<DbKey, NotionDatabase>>> {
   const data = await notion<{
