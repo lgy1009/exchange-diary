@@ -19,14 +19,18 @@ export function EuropeMap({
   points = [],
   focus,
   labels = false,
+  compact = false,
   className = "",
 }: {
   visits: Record<string, number>; // 나라 코드 → 여행·일기 수
   points?: MapPoint[]; // 여행지 좌표 (학교에서 점선으로 잇는다)
   focus?: string; // 나라 페이지에서 강조할 나라
   labels?: boolean; // 다녀온 나라 이름표
+  compact?: boolean; // 홈 카드용: 감싼 칸 크기에 맞춰 채우고, 넘치는 부분은 북쪽부터 잘라 낸다
   className?: string;
 }) {
+  const viewBox = `0 0 ${MAP_WIDTH} ${MAP_HEIGHT}`;
+  const top = 0;
   const [hx, hy] = project(SCHOOL.lat, SCHOOL.lng);
   const fillOf = (code: string | null) => {
     const n = code ? (visits[code] ?? 0) : 0;
@@ -37,8 +41,14 @@ export function EuropeMap({
   };
 
   return (
-    <svg viewBox={`0 0 ${MAP_WIDTH} ${MAP_HEIGHT}`} className={`block h-auto w-full ${className}`} role="img" aria-label="다녀온 나라를 색칠한 유럽 지도">
-      <rect width={MAP_WIDTH} height={MAP_HEIGHT} fill="var(--sea-pale)" rx="18" />
+    <svg
+      viewBox={viewBox}
+      preserveAspectRatio={compact ? "xMidYMax slice" : undefined}
+      className={`block w-full ${compact ? "h-full bg-sea-pale" : "h-auto"} ${className}`}
+      role="img"
+      aria-label="다녀온 나라를 색칠한 유럽 지도"
+    >
+      <rect y={top} width={MAP_WIDTH} height={MAP_HEIGHT - top} fill="var(--sea-pale)" rx={compact ? 0 : 18} />
       {MAP_COUNTRIES.map((c, i) => {
         const shape = <path d={c.d} fill={fillOf(c.code)} stroke="var(--card)" strokeWidth={1.2} />;
         const visited = c.code && (visits[c.code] ?? 0) > 0;

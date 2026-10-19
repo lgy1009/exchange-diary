@@ -4,7 +4,7 @@ import { Suspense } from "react";
 import { cacheLife } from "next/cache";
 import { REVALIDATE_SECONDS, SCHOOL } from "@/lib/config";
 import { getDiaryData } from "@/lib/diary-data";
-import { todayIn } from "@/lib/dates";
+import { short, todayIn } from "@/lib/dates";
 import { GuestbookForm } from "./guestbook-form";
 
 export const metadata: Metadata = { title: "방명록" };
@@ -29,7 +29,6 @@ async function GuestbookList() {
   cacheLife({ stale: 60, revalidate: REVALIDATE_SECONDS, expire: 3600 });
 
   const { guestbook } = await getDiaryData(false);
-  const fmt = new Intl.DateTimeFormat("ko-KR", { timeZone: SCHOOL.timeZone, month: "numeric", day: "numeric" });
   const thisYear = todayIn(SCHOOL.timeZone).slice(0, 4);
 
   return (
@@ -43,8 +42,9 @@ async function GuestbookList() {
       {guestbook.length === 0 && <p className="card text-sm text-muted">첫 방명록을 남겨 주세요.</p>}
       <ul className="flex flex-col gap-2">
         {guestbook.map((g) => {
-          const d = g.createdAt ? new Date(g.createdAt) : null;
-          const date = d ? (g.createdAt.startsWith(thisYear) ? fmt.format(d) : `${g.createdAt.slice(0, 4)}. ${fmt.format(d)}`) : "";
+          // 다른 화면과 같은 "3.14" 모양 (말라가 시간 기준). 올해가 아니면 연도도 붙인다
+          const day = g.createdAt ? todayIn(SCHOOL.timeZone, new Date(g.createdAt)) : "";
+          const date = day ? (day.startsWith(thisYear) ? short(day) : `${day.slice(0, 4)}.${short(day)}`) : "";
           return (
             <li key={g.id} className="card">
               <div className="flex items-baseline justify-between gap-2">

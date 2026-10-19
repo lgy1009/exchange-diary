@@ -108,8 +108,9 @@ function CountriesCard({ stats, points }: { stats: TravelStats; points: MapPoint
         <Count n={stats.cityCount} unit="cities" />
         <Count n={stats.entryCount} unit="diaries" />
       </div>
-      <div className="mt-3 flex-1">
-        <EuropeMap visits={visitsOf(stats)} points={points} />
+      {/* 휴대폰: 가로로 넓은 칸 / 큰 화면: 카드 남은 높이를 모두 채움 (넘치는 북쪽은 잘림) */}
+      <div className="mt-3 aspect-[16/11] overflow-hidden rounded-[14px] md:aspect-auto md:min-h-56 md:flex-1">
+        <EuropeMap visits={visitsOf(stats)} points={points} compact />
       </div>
       <div className="mt-3 flex flex-wrap gap-1.5">
         {stats.stamps.length === 0 && <p className="label">아직 찍힌 도장이 없어요.</p>}
@@ -159,7 +160,9 @@ function PhotosCard({ data }: { data: DiaryData }) {
               <NotionImage pageId={p.id} alt={p.title} className="h-full w-full" />
             </Link>
           ) : (
-            <div key={i} className={tile} />
+            <div key={i} className={`${tile} flex items-center justify-center opacity-60`}>
+              <span className="dot text-[10px] text-ink/40">PHOTO</span>
+            </div>
           );
         })}
       </div>
