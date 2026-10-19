@@ -4,7 +4,7 @@ import localFont from "next/font/local";
 import Link from "next/link";
 import { OWNER, SCHOOL } from "@/lib/config";
 import { Suspense } from "react";
-import { BottomNav, BottomNavView, SideTabs, SideTabsView } from "./site-nav";
+import { BottomNav, BottomNavView, LockLink, SideTabs, SideTabsView } from "./site-nav";
 import "./globals.css";
 
 // 본문 한글 Pretendard, 영문 제목·숫자 Manrope, 미니홈피 장식 DotGothic16 (영문·숫자만 들어 있다)
@@ -46,8 +46,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
               {OWNER.en}
               <span className="text-terracotta">.</span>MÁLAGA
             </Link>
-            <span className="dot text-xs text-muted">
-              {SCHOOL.city.toUpperCase()} · {SCHOOL.semesterStart.slice(0, 4)}
+            <span className="flex items-baseline gap-3">
+              <span className="dot text-xs text-muted">
+                {SCHOOL.city.toUpperCase()} · {SCHOOL.semesterStart.slice(0, 4)}
+              </span>
+              <LockLink />
             </span>
           </header>
           <div className="relative">
