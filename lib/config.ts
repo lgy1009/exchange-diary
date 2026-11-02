@@ -22,17 +22,17 @@ export const SCHOOL = {
 
 // 화면에 보이는 이름. 후보를 바꿀 때는 여기만 고친다.
 export const SITE = {
-  title: "ⓖⓐⓨⓞⓤⓝⓖ ♡", // 맨 위 제목 줄
+  title: "ⓖⓐⓨⓞⓤⓝⓖ ♡ ⓜⓐⓛⓐⓖⓐ", // 맨 위 제목 줄
   profileName: "♡가영♡", // 프로필 카드 이름
 } as const;
 
 // 사이트 색 (DESIGN §6). 실제 화면 색은 app/globals.css에서 같은 값으로 쓴다.
 export const COLORS = {
-  sea: "#0B7A70", // 진한 청록 — 중심 색
-  terracotta: "#DB4500", // 오렌지 — 날짜·도장·다녀온 나라
+  sea: "#CC5A2B", // 노을 주황 — 중심 색
+  terracotta: "#1E7FA3", // 바다색 — 날짜·숫자 포인트
   sand: "#FFD84D", // 노랑
   bougainvillea: "#C40D6E", // 핫핑크 — 작은 포인트
-  paper: "#EFFAF6", // 창 안쪽 바탕
+  paper: "#FFF5EE", // 창 안쪽 바탕
 } as const;
 
 // 노션 데이터베이스 이름. 노션에서 이 이름과 똑같이 만들면 사이트가 이름으로 찾는다.

@@ -1,18 +1,18 @@
 @import "tailwindcss";
 
-/* 미니홈피 (DESIGN §6) — 민트 벽지 위의 둥근 다이어리, 얇은 선과 점선, 도트 글꼴
+/* 미니홈피 (DESIGN §6) — 복숭아 벽지 위의 둥근 다이어리, 얇은 선과 점선, 도트 글꼴
    색 이름(sea, terracotta…)은 코드 곳곳에서 쓰므로 그대로 두고 값만 바꿨다. 색을 바꿀 때는 여기만 고친다. */
 :root {
-  --wall: #e0f6ef; /* 창 바깥 벽지 */
-  --paper: #effaf6; /* 창 안쪽 바탕 */
+  --wall: #ffe9dc; /* 창 바깥 벽지 */
+  --paper: #fff5ee; /* 창 안쪽 바탕 */
   --card: #ffffff; /* 카드 바탕 */
-  --ink: #16302b; /* 글자·굵은 선 */
-  --muted: #4c6a63; /* 라벨·보조 글자 */
-  --line: #a9d6c9; /* 가는 선 */
-  --sea: #0b7a70; /* 진한 청록: 중심 색 */
-  --sea-soft: #86d3c1;
-  --sea-pale: #d3f1e8; /* 지도 바다 */
-  --terracotta: #db4500; /* 오렌지: 날짜·도장·다녀온 나라 */
+  --ink: #40241a; /* 글자·굵은 선 */
+  --muted: #85624f; /* 라벨·보조 글자 */
+  --line: #f4c4a8; /* 가는 선 */
+  --sea: #cc5a2b; /* 노을 주황: 중심 색 */
+  --sea-soft: #f3ae88;
+  --sea-pale: #d7eef5; /* 지도 바다 */
+  --terracotta: #1e7fa3; /* 바다색: 날짜·숫자 포인트 */
   --terracotta-soft: #ff8a4d;
   --sand: #ffd84d; /* 노랑: 사진 자리·내 일정 탭 */
   --sand-pale: #fbfdfc; /* 안 간 나라 */
@@ -44,7 +44,7 @@ html {
   background: var(--wall);
 }
 
-/* 벽지: 민트 바탕에 작은 흰 점 무늬 */
+/* 벽지: 복숭아 바탕에 작은 흰 점 무늬 */
 body {
   background-color: var(--wall);
   background-image: radial-gradient(rgb(255 255 255 / 0.9) 1px, transparent 1px);

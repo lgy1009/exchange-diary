@@ -38,11 +38,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <div className="relative">
             <div className="frame md:mr-[66px]">
               <header className="flex items-center justify-between border-b border-dashed border-sea-soft px-3 py-2 text-sea">
-                <Link href="/" className="font-sans text-xl font-bold whitespace-nowrap sm:text-2xl">
+                <Link href="/" className="font-sans text-lg font-bold whitespace-nowrap sm:text-2xl">
                   {SITE.title}
                 </Link>
                 <span className="flex items-center gap-3">
-                  <span className="dot text-xs whitespace-nowrap text-muted">
+                  <span className="dot hidden text-xs whitespace-nowrap text-muted sm:inline">
                     {SCHOOL.city.toUpperCase()} · {SCHOOL.semesterStart.slice(0, 4)}
                   </span>
                   <LockLink />
