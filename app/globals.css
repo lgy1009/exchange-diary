@@ -3,7 +3,7 @@
 /* 미니홈피 (DESIGN §6) — 민트 벽지 위의 둥근 다이어리, 얇은 선과 점선, 도트 글꼴
    색 이름(sea, terracotta…)은 코드 곳곳에서 쓰므로 그대로 두고 값만 바꿨다. 색을 바꿀 때는 여기만 고친다. */
 :root {
-  --wall: #bdeadb; /* 창 바깥 벽지 */
+  --wall: #e0f6ef; /* 창 바깥 벽지 */
   --paper: #effaf6; /* 창 안쪽 바탕 */
   --card: #ffffff; /* 카드 바탕 */
   --ink: #16302b; /* 글자·굵은 선 */
@@ -47,7 +47,7 @@ html {
 /* 벽지: 민트 바탕에 작은 흰 점 무늬 */
 body {
   background-color: var(--wall);
-  background-image: radial-gradient(rgb(255 255 255 / 0.65) 1px, transparent 1px);
+  background-image: radial-gradient(rgb(255 255 255 / 0.9) 1px, transparent 1px);
   background-size: 14px 14px;
   color: var(--ink);
   font-family: var(--font-sans);
@@ -71,7 +71,7 @@ body {
   background: var(--card);
   border: 1px solid var(--sea);
   border-radius: 10px;
-  outline: 2px dashed #fff;
+  outline: 2px dashed var(--sea-soft);
   outline-offset: 5px;
 }
 

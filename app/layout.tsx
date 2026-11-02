@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Manrope } from "next/font/google";
 import localFont from "next/font/local";
 import Link from "next/link";
-import { OWNER, SCHOOL } from "@/lib/config";
+import { OWNER, SCHOOL, SITE } from "@/lib/config";
 import { Suspense } from "react";
 import { BottomNav, BottomNavView, LockLink, SideTabs, SideTabsView } from "./site-nav";
 import "./globals.css";
@@ -47,7 +47,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             <div className="frame md:mr-[66px]">
               <header className="flex items-center justify-between border-b border-dashed border-sea-soft px-3 py-2 text-sea">
                 <Link href="/" className="dot text-sm font-bold sm:text-base">
-                  {OWNER.name}의 미니홈피
+                  {SITE.title}
                 </Link>
                 <span className="flex items-center gap-3">
                   <span className="dot text-xs text-muted">

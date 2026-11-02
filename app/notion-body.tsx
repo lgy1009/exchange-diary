@@ -78,7 +78,7 @@ export function NotionBody({ blocks }: { blocks: Block[] }) {
   if (blocks.length === 0) return <p className="text-sm text-muted">노션 본문이 아직 비어 있어요.</p>;
 
   return (
-    <div className="font-sans leading-relaxed">
+    <div className="font-sans text-[15px] leading-relaxed">
       {groups.map((g, i) =>
         "list" in g ? (
           g.list === "ul" ? (

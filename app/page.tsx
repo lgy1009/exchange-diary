@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { Suspense } from "react";
 import { cacheLife } from "next/cache";
-import { OWNER, REVALIDATE_SECONDS, SCHOOL } from "@/lib/config";
+import { OWNER, REVALIDATE_SECONDS, SCHOOL, SITE } from "@/lib/config";
 import { getDiaryData } from "@/lib/diary-data";
 import { dayOf, semesterState, short, todayIn } from "@/lib/dates";
 import { travelStats, tripPoints, visitsOf, type TravelStats } from "@/lib/stats";
@@ -67,7 +67,7 @@ function ProfileCard({ profile, today }: { profile: Profile | null; today: strin
           </div>
         )}
         <div className="sm:mt-3">
-          <p className="text-sm font-bold text-sea">{OWNER.name} in Málaga</p>
+          <p className="text-sm font-bold text-sea">{SITE.profileName}</p>
           <p className="label mt-0.5">{SCHOOL.nameKo}</p>
         </div>
       </div>
@@ -75,6 +75,13 @@ function ProfileCard({ profile, today }: { profile: Profile | null; today: strin
       {profile?.mood && (
         <p className="mt-3">
           <span className="chip chip-pink">오늘 기분 {profile.mood}</span>
+        </p>
+      )}
+      {/* 미니홈피 BGM 자리: 재생은 하지 않고 노션에 적은 노래 제목만 보여 준다 */}
+      {profile?.song && (
+        <p className="mt-3 flex items-center gap-1.5 border border-dashed border-sea-soft bg-paper px-2 py-1.5 text-xs text-sea">
+          <span aria-hidden>♪</span>
+          <span className="truncate">{profile.song}</span>
         </p>
       )}
       <dl className="mt-auto grid grid-cols-2 gap-2 pt-5 text-center">

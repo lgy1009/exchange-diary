@@ -9,6 +9,7 @@ import { short } from "@/lib/dates";
 import { travelStats, tripPoints, visitsOf } from "@/lib/stats";
 import { isUnlocked } from "@/lib/viewer";
 import { EuropeMap } from "../europe-map";
+import { PassportStamp } from "../passport-stamp";
 
 export const metadata: Metadata = { title: "지도" };
 
@@ -55,7 +56,7 @@ async function MapContent({ unlocked }: { unlocked: boolean }) {
           {stats.stamps.map((s) => (
             <li key={s.code}>
               <Link href={`/map/${s.code.toLowerCase()}`} className="flex items-center gap-3 border border-line bg-paper p-3 hover:bg-sand-pale">
-                <span className="stamp">{s.code}</span>
+                <PassportStamp code={s.code} name={s.name} date={s.firstVisit} size={46} mini />
                 <span className="min-w-0 flex-1">
                   <span className="block font-semibold">{s.name}</span>
                   <span className="label">

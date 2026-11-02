@@ -7,12 +7,12 @@ import { cacheLife } from "next/cache";
 import { REVALIDATE_SECONDS } from "@/lib/config";
 import { COUNTRIES, nameOf, type CountryCode } from "@/lib/countries";
 import { getDiaryData } from "@/lib/diary-data";
-import { short } from "@/lib/dates";
 import { travelStats, tripPoints, visitsOf } from "@/lib/stats";
 import { isLocked } from "@/lib/transform";
 import { isUnlocked } from "@/lib/viewer";
 import { EuropeMap } from "../../europe-map";
 import { EntryItem, TripItem } from "../../items";
+import { PassportStamp } from "../../passport-stamp";
 
 // 목록에 있는 나라만 페이지를 미리 만든다 (그 밖의 주소는 404)
 export function generateStaticParams() {
@@ -59,10 +59,7 @@ async function CountryContent({ code, unlocked }: { code: CountryCode; unlocked:
           ← 지도
         </Link>
         <div className="mt-4 flex items-center gap-4">
-          <div className="flex h-24 w-24 shrink-0 rotate-[-8deg] flex-col items-center justify-center rounded-full border-2 border-dashed border-terracotta text-terracotta">
-            <span className="display text-3xl">{code}</span>
-            <span className="dot text-[10px]">{stamp?.firstVisit ? short(stamp.firstVisit) : "NOT YET"}</span>
-          </div>
+          <PassportStamp code={code} name={nameOf(code)} date={stamp?.firstVisit} size={132} />
           <div>
             <h1 className="text-2xl font-semibold">{nameOf(code)}</h1>
             <p className="label mt-1">

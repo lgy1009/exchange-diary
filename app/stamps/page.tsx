@@ -7,12 +7,9 @@ import { REVALIDATE_SECONDS, SCHOOL } from "@/lib/config";
 import { getDiaryData } from "@/lib/diary-data";
 import { travelStats } from "@/lib/stats";
 import { isUnlocked } from "@/lib/viewer";
+import { PassportStamp } from "../passport-stamp";
 
 export const metadata: Metadata = { title: "여권 도장" };
-
-// 도장마다 살짝 다른 기울기와 색 (같은 나라는 항상 같은 모양)
-const TILTS = [-10, 6, -4, 12, -14, 3, 9, -7];
-const INKS = ["var(--terracotta)", "var(--sea)", "var(--pink)"];
 
 export default function StampsPage() {
   return (
@@ -54,24 +51,17 @@ async function StampsContent({ unlocked }: { unlocked: boolean }) {
       <section className="card min-h-64 bg-[repeating-linear-gradient(0deg,transparent,transparent_27px,var(--line)_28px)]">
         {stats.stamps.length === 0 && <p className="text-sm text-muted">아직 찍힌 도장이 없어요. 첫 여행을 떠나 보세요!</p>}
         <ul className="grid grid-cols-2 gap-x-4 gap-y-6 py-2 sm:grid-cols-3 md:grid-cols-4">
-          {stats.stamps.map((s, i) => {
-            const ink = INKS[i % INKS.length];
-            return (
-              <li key={s.code} className="flex justify-center">
-                <Link
-                  href={`/map/${s.code.toLowerCase()}`}
-                  className="flex h-32 w-32 flex-col items-center justify-center rounded-full border-[3px] border-double bg-card/70 text-center transition-transform hover:scale-105"
-                  style={{ borderColor: ink, color: ink, transform: `rotate(${TILTS[i % TILTS.length]}deg)` }}
-                  title={`${s.name} — 여행 ${s.trips} · 일기 ${s.entries}`}
-                >
-                  <span className="dot text-[10px]">ENTRY</span>
-                  <span className="display text-3xl leading-none">{s.code}</span>
-                  <span className="mt-1 text-xs font-semibold">{s.name}</span>
-                  <span className="dot mt-0.5 text-[10px]">{s.firstVisit?.replaceAll("-", ".") ?? ""}</span>
-                </Link>
-              </li>
-            );
-          })}
+          {stats.stamps.map((s) => (
+            <li key={s.code} className="flex justify-center">
+              <Link
+                href={`/map/${s.code.toLowerCase()}`}
+                className="transition-transform hover:scale-105"
+                title={`${s.name} — 여행 ${s.trips} · 일기 ${s.entries}`}
+              >
+                <PassportStamp code={s.code} name={s.name} date={s.firstVisit} />
+              </Link>
+            </li>
+          ))}
         </ul>
       </section>
     </div>

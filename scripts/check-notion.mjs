@@ -24,7 +24,7 @@ const EXPECT = {
   수업: { 과목명: "title", 요일: "multi_select", 시작: "rich_text", 종료: "rich_text", 강의실: "rich_text", 교수: "rich_text" },
   여행: { 제목: "title", 기간: "date", 나라: "multi_select", "나라·도시": "rich_text", 위도: "number", 경도: "number", "한 줄 요약": "rich_text", "대표 사진": "files", 공개: "checkbox" },
   일기: { 제목: "title", 날짜: "date", 기분: "select", 나라: "select", 장소: "rich_text", 태그: "multi_select", "대표 사진": "files", 공개: "checkbox" },
-  프로필: { "상태 메시지": "title", "오늘 기분": "select", "대표 사진": "files" },
+  프로필: { "상태 메시지": "title", "오늘 기분": "select", "노래 제목": "rich_text", "대표 사진": "files" },
   방명록: { 이름: "title", 내용: "rich_text", 승인: "checkbox" },
 };
 

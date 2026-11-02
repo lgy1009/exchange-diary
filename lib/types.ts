@@ -68,6 +68,7 @@ export type Profile = {
   id: string;
   status: string; // 상태 메시지
   mood: string | null; // 오늘 기분
+  song: string; // 노래 제목 (없으면 빈 글자)
   hasPhoto: boolean;
   updatedAt: string;
 };

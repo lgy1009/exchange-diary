@@ -39,7 +39,7 @@ const raw = sortRaw({
   ],
   profile: toProfile([
     { id: "p-old", last_edited_time: "2027-03-01T00:00:00Z", properties: { "상태 메시지": t("옛 상태") } },
-    { id: "p-new", last_edited_time: "2027-03-05T00:00:00Z", properties: { "상태 메시지": t("새 상태"), "오늘 기분": { select: { name: "맑음" } } } },
+    { id: "p-new", last_edited_time: "2027-03-05T00:00:00Z", properties: { "상태 메시지": t("새 상태"), "오늘 기분": { select: { name: "맑음" } }, "노래 제목": t("새 노래") } },
   ]),
   guestbook: [
     toGuestbook({ id: "g1", created_time: "2027-03-01T10:00:00Z", properties: { 이름: t("엄마"), 내용: r("밥 잘 먹어"), 승인: c(true) } }),
@@ -62,6 +62,7 @@ assert.equal(raw.entries.find((e) => e.id === "d1").country, "ES", "일기 나�
 assert.equal(raw.entries.find((e) => e.id === "d2").country, "FR");
 assert.equal(raw.profile.status, "새 상태", "프로필은 가장 최근 줄");
 assert.equal(raw.profile.mood, "맑음");
+assert.equal(raw.profile.song, "새 노래", "프로필 노래 제목");
 assert.deepEqual(raw.guestbook.map((g) => g.id), ["g3", "g2", "g1"], "방명록은 최신 글부터");
 
 // ---- 잠긴 상태(비밀번호 없음) ----

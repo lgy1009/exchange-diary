@@ -114,6 +114,7 @@ const DATABASES = [
     properties: {
       "상태 메시지": { title: {} },
       "오늘 기분": { select: opts(["맑음", "흐림", "비", "설렘", "피곤", "행복"]) },
+      "노래 제목": { rich_text: {} },
       "대표 사진": { files: {} },
     },
   },

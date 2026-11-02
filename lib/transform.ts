@@ -127,6 +127,7 @@ export function toProfile(pages: PageLike[]): Profile | null {
     id: latest.id,
     status: textOf(p, "상태 메시지"),
     mood: selectOf(p, "오늘 기분"),
+    song: textOf(p, "노래 제목"),
     hasPhoto: hasFiles(p, "대표 사진"),
     updatedAt: latest.last_edited_time ?? "",
   };
