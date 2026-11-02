@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-/* 요즘식 미니홈피 (DESIGN §6) — 민트 벽지 위의 또렷한 창, 굵은 선, 각진 모서리, 쨍한 색
+/* 미니홈피 (DESIGN §6) — 민트 벽지 위의 둥근 다이어리, 얇은 선과 점선, 도트 글꼴
    색 이름(sea, terracotta…)은 코드 곳곳에서 쓰므로 그대로 두고 값만 바꿨다. 색을 바꿀 때는 여기만 고친다. */
 :root {
   --wall: #bdeadb; /* 창 바깥 벽지 */
@@ -8,7 +8,7 @@
   --card: #ffffff; /* 카드 바탕 */
   --ink: #16302b; /* 글자·굵은 선 */
   --muted: #4c6a63; /* 라벨·보조 글자 */
-  --line: #bfe3d8; /* 가는 선 */
+  --line: #a9d6c9; /* 가는 선 */
   --sea: #0b7a70; /* 진한 청록: 중심 색 */
   --sea-soft: #86d3c1;
   --sea-pale: #d3f1e8; /* 지도 바다 */
@@ -66,18 +66,20 @@ body {
   font-family: var(--font-dot);
 }
 
-/* 사이트 전체를 담는 창 */
+/* 사이트 전체를 담는 다이어리: 흰 점선 표지 안에 속지 */
 .frame {
-  background: var(--paper);
-  border: 2px solid var(--ink);
-  box-shadow: 5px 5px 0 var(--ink);
+  background: var(--card);
+  border: 1px solid var(--sea);
+  border-radius: 10px;
+  outline: 2px dashed #fff;
+  outline-offset: 5px;
 }
 
-/* 각진 카드 */
+/* 얇은 선 카드 */
 .card {
   background: var(--card);
-  border: 1.5px solid var(--ink);
-  padding: 12px;
+  border: 1px solid var(--line);
+  padding: 10px;
 }
 
 /* 카드 머리줄: 제목 + 더 보기 */
@@ -87,7 +89,7 @@ body {
   justify-content: space-between;
   margin-bottom: 8px;
   padding-bottom: 5px;
-  border-bottom: 1.5px dashed var(--ink);
+  border-bottom: 1px dashed var(--sea-soft);
 }
 
 .card-head h2 {
@@ -105,18 +107,17 @@ body {
 /* 버튼: 눌리는 느낌의 각진 단추 */
 .btn {
   display: inline-block;
-  background: var(--sea);
-  color: #fff;
-  border: 1.5px solid var(--ink);
-  box-shadow: 2px 2px 0 var(--ink);
-  padding: 6px 18px;
+  background: var(--paper);
+  color: var(--sea);
+  border: 1px solid var(--sea);
+  padding: 4px 14px;
   font-family: var(--font-dot);
   font-size: 0.75rem;
 }
 
 .btn:hover {
-  transform: translate(1px, 1px);
-  box-shadow: 1px 1px 0 var(--ink);
+  background: var(--sea);
+  color: #fff;
 }
 
 .btn:disabled {
@@ -124,16 +125,17 @@ body {
 }
 
 .btn-hot {
-  background: var(--terracotta);
+  border-color: var(--terracotta);
+  color: var(--terracotta);
 }
 
 /* 작은 꼬리표 (태그·장소) */
 .chip {
   display: inline-block;
   background: var(--paper);
-  border: 1px solid var(--ink);
+  border: 1px solid var(--line);
   color: var(--ink);
-  padding: 2px 8px;
+  padding: 1px 7px;
   font-family: var(--font-dot);
   font-size: 0.75rem;
 }
@@ -146,13 +148,13 @@ body {
 /* 입력 칸 */
 .field {
   background: var(--card);
-  border: 1.5px solid var(--ink);
-  padding: 8px 12px;
+  border: 1px solid var(--line);
+  padding: 6px 9px;
   outline: none;
 }
 
 .field:focus {
-  box-shadow: 2px 2px 0 var(--sea);
+  border-color: var(--sea);
 }
 
 /* 여권 도장 모양 칩 */
@@ -160,7 +162,7 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  border: 1.5px solid var(--terracotta);
+  border: 1px dashed var(--terracotta);
   color: var(--terracotta);
   padding: 1px 7px;
   font-size: 0.72rem;

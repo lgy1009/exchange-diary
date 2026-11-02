@@ -54,7 +54,7 @@ async function MapContent({ unlocked }: { unlocked: boolean }) {
         <ul className="grid gap-2 sm:grid-cols-2 md:grid-cols-1">
           {stats.stamps.map((s) => (
             <li key={s.code}>
-              <Link href={`/map/${s.code.toLowerCase()}`} className="flex items-center gap-3 border-[1.5px] border-ink bg-paper p-3 hover:bg-sand-pale">
+              <Link href={`/map/${s.code.toLowerCase()}`} className="flex items-center gap-3 border border-line bg-paper p-3 hover:bg-sand-pale">
                 <span className="stamp">{s.code}</span>
                 <span className="min-w-0 flex-1">
                   <span className="block font-semibold">{s.name}</span>

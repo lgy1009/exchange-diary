@@ -59,15 +59,15 @@ function ProfileCard({ profile, today }: { profile: Profile | null; today: strin
           <NotionImage
             pageId={profile.id}
             alt={`${OWNER.name} 대표 사진`}
-            className="aspect-square w-24 shrink-0 border-[1.5px] border-ink bg-sand sm:aspect-[4/3] sm:w-full"
+            className="aspect-square w-24 shrink-0 border border-line bg-sand sm:aspect-[4/3] sm:w-full"
           />
         ) : (
-          <div className="flex aspect-square w-24 shrink-0 items-end border-[1.5px] border-ink bg-sand p-2 text-[10px] text-ink sm:aspect-[4/3] sm:w-auto sm:p-3 sm:text-xs">
+          <div className="flex aspect-square w-24 shrink-0 items-end border border-line bg-sand p-2 text-[10px] text-ink sm:aspect-[4/3] sm:w-auto sm:p-3 sm:text-xs">
             노션 프로필에 대표 사진을 넣어 주세요
           </div>
         )}
         <div className="sm:mt-3">
-          <p className="text-lg font-semibold">{OWNER.name} in Málaga</p>
+          <p className="text-sm font-bold text-sea">{OWNER.name} in Málaga</p>
           <p className="label mt-0.5">{SCHOOL.nameKo}</p>
         </div>
       </div>
@@ -78,13 +78,13 @@ function ProfileCard({ profile, today }: { profile: Profile | null; today: strin
         </p>
       )}
       <dl className="mt-auto grid grid-cols-2 gap-2 pt-5 text-center">
-        <div className="border-[1.5px] border-ink bg-paper py-2">
+        <div className="border border-line bg-paper py-2">
           <dt className="label">말라가 지금</dt>
           <dd className="dot mt-0.5 text-lg text-sea">
             <LocalClock timeZone={SCHOOL.timeZone} />
           </dd>
         </div>
-        <div className="border-[1.5px] border-ink bg-paper py-2">
+        <div className="border border-line bg-paper py-2">
           <dt className="label">{s.phase === "before" ? "출발까지" : s.phase === "during" ? "교환학생" : "학기"}</dt>
           <dd className="dot mt-0.5 text-lg text-terracotta">{dday}</dd>
         </div>
@@ -109,7 +109,7 @@ function CountriesCard({ stats, points }: { stats: TravelStats; points: MapPoint
         <Count n={stats.entryCount} unit="diaries" />
       </div>
       {/* 휴대폰: 가로로 넓은 칸 / 큰 화면: 카드 남은 높이를 모두 채움 (넘치는 북쪽은 잘림) */}
-      <div className="mt-3 aspect-[16/11] overflow-hidden border-[1.5px] border-ink md:aspect-auto md:min-h-56 md:flex-1">
+      <div className="mt-3 aspect-[16/11] overflow-hidden border border-line md:aspect-auto md:min-h-56 md:flex-1">
         <EuropeMap visits={visitsOf(stats)} points={points} compact />
       </div>
       <div className="mt-3 flex flex-wrap gap-1.5">
@@ -127,7 +127,7 @@ function CountriesCard({ stats, points }: { stats: TravelStats; points: MapPoint
 function Count({ n, unit }: { n: number; unit: string }) {
   return (
     <div>
-      <p className="dot text-3xl text-sea">{n}</p>
+      <p className="dot text-xl text-terracotta">{n}</p>
       <p className="dot text-[10px] text-muted">{unit}</p>
     </div>
   );
@@ -154,7 +154,7 @@ function PhotosCard({ data }: { data: DiaryData }) {
       <div className="grid grid-cols-3 gap-1.5">
         {[0, 1, 2].map((i) => {
           const p = withPhoto[i];
-          const tile = `aspect-square border-[1.5px] border-ink ${TILE_COLORS[i]}`;
+          const tile = `aspect-square border border-line ${TILE_COLORS[i]}`;
           return p ? (
             <Link key={p.id} href={p.href} className={`${tile} overflow-hidden`} title={p.title}>
               <NotionImage pageId={p.id} alt={p.title} className="h-full w-full" />

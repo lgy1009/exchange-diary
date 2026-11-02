@@ -77,7 +77,7 @@ async function EntryContent({ id, unlocked }: { id: string; unlocked: boolean })
         ))}
         {!entry.isPublic && <span className="chip">🔒 나만 보기</span>}
       </div>
-      {entry.hasCover && <NotionImage pageId={entry.id} alt={entry.title} className="mt-6 w-full border-[1.5px] border-ink bg-sand-pale" />}
+      {entry.hasCover && <NotionImage pageId={entry.id} alt={entry.title} className="mt-6 w-full border border-line bg-sand-pale" />}
       <div className="mt-6">
         <NotionBody blocks={blocks} />
       </div>

@@ -42,7 +42,7 @@ async function StampsContent({ unlocked }: { unlocked: boolean }) {
             [stats.cityCount, "cities", "도시"],
             [stats.entryCount, "diaries", "일기"],
           ].map(([n, en, ko]) => (
-            <div key={en} className="border-[1.5px] border-ink bg-paper py-3">
+            <div key={en} className="border border-line bg-paper py-3">
               <p className="display text-3xl text-sea">{n}</p>
               <p className="dot text-[10px] text-muted">{en}</p>
               <p className="label">{ko}</p>

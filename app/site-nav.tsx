@@ -36,8 +36,8 @@ export function BottomNav() {
 export function SideTabsView({ isActive = NONE, unlocked = false }: { isActive?: IsActive; unlocked?: boolean }) {
   const items = unlocked ? [...MENU, PRIVATE_MENU] : MENU;
   return (
-    <nav className="absolute top-12 right-0 hidden w-[72px] md:block">
-      <ul className="flex flex-col gap-1">
+    <nav className="absolute top-14 right-0 hidden w-[66px] md:block">
+      <ul className="flex flex-col gap-0.5">
         {items.map((m) => {
           const on = isActive(m.href);
           const mine = m === PRIVATE_MENU;
@@ -45,8 +45,8 @@ export function SideTabsView({ isActive = NONE, unlocked = false }: { isActive?:
             <li key={m.href}>
               <Link
                 href={m.href}
-                className={`dot block border-2 border-l-0 border-ink px-2.5 py-1.5 text-xs ${
-                  on ? "bg-terracotta text-white" : mine ? "bg-sand text-ink hover:bg-terracotta-soft" : "bg-card text-ink hover:bg-sand"
+                className={`dot block rounded-r-md border border-l-0 border-sea px-2 py-1.5 text-xs ${
+                  on ? "bg-card font-bold text-sea" : mine ? "bg-terracotta text-white" : "bg-sea text-white hover:bg-terracotta"
                 }`}
               >
                 {m.label}
@@ -62,7 +62,7 @@ export function SideTabsView({ isActive = NONE, unlocked = false }: { isActive?:
 export function BottomNavView({ isActive = NONE, unlocked = false }: { isActive?: IsActive; unlocked?: boolean }) {
   const items = unlocked ? [...MENU, PRIVATE_MENU] : MENU;
   return (
-    <nav className="fixed inset-x-0 bottom-0 z-10 border-t-2 border-ink bg-card md:hidden">
+    <nav className="fixed inset-x-0 bottom-0 z-10 border-t border-sea bg-card md:hidden">
       <ul className={`grid pb-[env(safe-area-inset-bottom)] ${unlocked ? "grid-cols-6" : "grid-cols-5"}`}>
         {items.map((m) => {
           const on = isActive(m.href);

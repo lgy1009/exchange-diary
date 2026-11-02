@@ -32,7 +32,7 @@ function One({ b }: { b: Exclude<Block, { type: "li" } | { type: "oli" }> }) {
       return (
         <figure className="my-5">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={blockImageSrc(b.id)} alt={b.caption || "사진"} loading="lazy" decoding="async" className="w-full border-[1.5px] border-ink bg-sand-pale" />
+          <img src={blockImageSrc(b.id)} alt={b.caption || "사진"} loading="lazy" decoding="async" className="w-full border border-line bg-sand-pale" />
           {b.caption && <figcaption className="label mt-1.5 text-center">{b.caption}</figcaption>}
         </figure>
       );
@@ -46,7 +46,7 @@ function One({ b }: { b: Exclude<Block, { type: "li" } | { type: "oli" }> }) {
       return <blockquote className="my-4 border-l-2 border-terracotta pl-4 text-ink/80"><Spans spans={b.spans} /></blockquote>;
     case "callout":
       return (
-        <div className="my-4 flex gap-2 border-[1.5px] border-ink bg-paper p-3">
+        <div className="my-4 flex gap-2 border border-line bg-paper p-3">
           {b.icon && <span>{b.icon}</span>}
           <p><Spans spans={b.spans} /></p>
         </div>
@@ -78,7 +78,7 @@ export function NotionBody({ blocks }: { blocks: Block[] }) {
   if (blocks.length === 0) return <p className="text-sm text-muted">노션 본문이 아직 비어 있어요.</p>;
 
   return (
-    <div className="leading-relaxed">
+    <div className="font-sans leading-relaxed">
       {groups.map((g, i) =>
         "list" in g ? (
           g.list === "ul" ? (
