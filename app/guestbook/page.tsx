@@ -49,7 +49,7 @@ async function GuestbookList() {
             <li key={g.id} className="card">
               <div className="flex items-baseline justify-between gap-2">
                 <span className="font-semibold text-sea">{g.name}</span>
-                <span className="dot text-xs text-muted">{date}</span>
+                <span className="dot text-[11px] text-muted">{date}</span>
               </div>
               <p className="mt-1.5 whitespace-pre-line break-words leading-relaxed">{g.message}</p>
             </li>

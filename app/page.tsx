@@ -35,10 +35,10 @@ async function HomeContent({ unlocked }: { unlocked: boolean }) {
   const stats = travelStats(data);
 
   return (
-    <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-[minmax(0,1fr)_minmax(0,1.25fr)_minmax(0,1.25fr)]">
+    <div className="grid gap-2.5 sm:grid-cols-2 md:grid-cols-[minmax(0,1fr)_minmax(0,1.25fr)_minmax(0,1.25fr)]">
       <ProfileCard profile={data.profile} today={today} />
       <CountriesCard stats={stats} points={tripPoints(data.trips)} />
-      <div className="flex flex-col gap-3 sm:col-span-2 md:col-span-1">
+      <div className="flex flex-col gap-2.5 sm:col-span-2 md:col-span-1">
         <PhotosCard data={data} />
         <DiaryCard data={data} />
         <GuestbookCard data={data} />
@@ -67,7 +67,7 @@ function ProfileCard({ profile, today }: { profile: Profile | null; today: strin
           </div>
         )}
         <div className="sm:mt-3">
-          <p className="text-lg font-bold text-sea">{OWNER.name} in Málaga</p>
+          <p className="text-sm font-bold text-sea">{OWNER.name} in Málaga</p>
           <p className="label mt-0.5">{SCHOOL.nameKo}</p>
         </div>
       </div>
@@ -80,13 +80,13 @@ function ProfileCard({ profile, today }: { profile: Profile | null; today: strin
       <dl className="mt-auto grid grid-cols-2 gap-2 pt-5 text-center">
         <div className="border border-line bg-paper py-2">
           <dt className="label">말라가 지금</dt>
-          <dd className="dot mt-1 text-2xl text-sea">
+          <dd className="dot mt-0.5 text-lg text-sea">
             <LocalClock timeZone={SCHOOL.timeZone} />
           </dd>
         </div>
         <div className="border border-line bg-paper py-2">
           <dt className="label">{s.phase === "before" ? "출발까지" : s.phase === "during" ? "교환학생" : "학기"}</dt>
-          <dd className="dot mt-1 text-2xl text-terracotta">{dday}</dd>
+          <dd className="dot mt-0.5 text-lg text-terracotta">{dday}</dd>
         </div>
       </dl>
     </section>
@@ -127,8 +127,8 @@ function CountriesCard({ stats, points }: { stats: TravelStats; points: MapPoint
 function Count({ n, unit }: { n: number; unit: string }) {
   return (
     <div>
-      <p className="dot text-2xl text-terracotta">{n}</p>
-      <p className="dot text-xs text-muted">{unit}</p>
+      <p className="dot text-xl text-terracotta">{n}</p>
+      <p className="dot text-[10px] text-muted">{unit}</p>
     </div>
   );
 }
@@ -161,7 +161,7 @@ function PhotosCard({ data }: { data: DiaryData }) {
             </Link>
           ) : (
             <div key={i} className={`${tile} flex items-center justify-center opacity-60`}>
-              <span className="dot text-xs text-ink/50">PHOTO</span>
+              <span className="dot text-[10px] text-ink/40">PHOTO</span>
             </div>
           );
         })}
@@ -182,11 +182,11 @@ function DiaryCard({ data }: { data: DiaryData }) {
         </Link>
       </div>
       {recent.length === 0 && <p className="text-sm text-muted">아직 일기가 없어요.</p>}
-      <ul className="flex flex-col gap-2 text-[15px]">
+      <ul className="flex flex-col gap-1 text-sm">
         {recent.map((e) => (
           <li key={e.id}>
             <Link href={`/diary/${e.id}`} className="flex gap-2 hover:text-sea">
-              <span className="dot w-11 shrink-0 pt-1 text-xs text-terracotta">{e.date ? short(dayOf(e.date.start)) : ""}</span>
+              <span className="dot w-10 shrink-0 text-terracotta">{e.date ? short(dayOf(e.date.start)) : ""}</span>
               <span className="truncate">{isLocked(e) ? "🔒 비공개 일기" : e.title}</span>
             </Link>
           </li>
@@ -208,7 +208,7 @@ function GuestbookCard({ data }: { data: DiaryData }) {
         </Link>
       </div>
       {recent.length === 0 && <p className="text-sm text-muted">첫 방명록을 남겨 주세요.</p>}
-      <ul className="flex flex-col gap-2 text-[15px]">
+      <ul className="flex flex-col gap-1 text-sm">
         {recent.map((g) => (
           <li key={g.id} className="truncate">
             <span className="text-sea">{g.name}</span> {g.message}

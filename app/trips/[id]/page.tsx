@@ -46,7 +46,7 @@ async function TripContent({ id, unlocked }: { id: string; unlocked: boolean }) 
       <Link href="/map" className="label hover:text-sea">
         ← 지도
       </Link>
-      <p className="dot mt-5 text-xs text-terracotta">
+      <p className="dot mt-5 text-sm text-terracotta">
         {start}
         {end && end !== start ? ` – ${end}` : ""}
       </p>

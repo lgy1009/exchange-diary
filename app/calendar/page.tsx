@@ -58,14 +58,14 @@ async function CalendarContent({ ym }: { ym: string }) {
     <div className="flex flex-col gap-2.5">
       <section className="card">
         <div className="flex items-center justify-between">
-          <Link href={`/calendar?m=${shiftMonth(ym, -1)}`} className="dot px-3 py-1 text-xs text-sea hover:bg-paper" aria-label="이전 달">
+          <Link href={`/calendar?m=${shiftMonth(ym, -1)}`} className="dot px-3 py-1 text-sm text-sea hover:bg-paper" aria-label="이전 달">
             ←
           </Link>
           <h1 className="text-center">
             <span className="display text-2xl text-sea">{y}.{String(mo).padStart(2, "0")}</span>
             <span className="label ml-2">내 일정</span>
           </h1>
-          <Link href={`/calendar?m=${shiftMonth(ym, 1)}`} className="dot px-3 py-1 text-xs text-sea hover:bg-paper" aria-label="다음 달">
+          <Link href={`/calendar?m=${shiftMonth(ym, 1)}`} className="dot px-3 py-1 text-sm text-sea hover:bg-paper" aria-label="다음 달">
             →
           </Link>
         </div>
@@ -98,7 +98,7 @@ async function CalendarContent({ ym }: { ym: string }) {
                 {d.events.length > 0 && <i className="h-1.5 w-1.5 rounded-full bg-sea" />}
                 {d.trips.length > 0 && <i className="h-1.5 w-1.5 rounded-full bg-terracotta" />}
               </div>
-              <ul className="mt-1 hidden flex-col gap-0.5 text-xs leading-tight sm:flex">
+              <ul className="mt-1 hidden flex-col gap-0.5 text-[11px] leading-tight sm:flex">
                 {d.trips.map((t) => (
                   <li key={t.id} className="truncate bg-terracotta px-1 text-white">{t.title}</li>
                 ))}
@@ -121,7 +121,7 @@ async function CalendarContent({ ym }: { ym: string }) {
           <ul className="mt-2 flex flex-col gap-1 text-sm">
             {clashDays.map((d) => (
               <li key={d.day}>
-                <span className="dot text-xs text-terracotta">{short(d.day)}</span> — {d.trips.map((t) => t.title).join(", ")} / 수업{" "}
+                <span className="dot text-terracotta">{short(d.day)}</span> — {d.trips.map((t) => t.title).join(", ")} / 수업{" "}
                 {d.courses.map((c) => `${c.start} ${c.name}`).join(", ")}
               </li>
             ))}
@@ -135,14 +135,14 @@ async function CalendarContent({ ym }: { ym: string }) {
         <ul className="flex flex-col gap-1.5 text-sm">
           {monthTrips.map((t) => (
             <li key={t.id} className="flex gap-2">
-              <span className="dot w-24 shrink-0 pt-0.5 text-xs text-terracotta">{rangeLabel(t.period!.start, t.period!.end)}</span>
+              <span className="dot w-24 shrink-0 text-terracotta">{rangeLabel(t.period!.start, t.period!.end)}</span>
               <Link href={`/trips/${t.id}`} className="hover:text-sea">✈ {t.title}</Link>
               {!t.isPublic && <span className="label">🔒</span>}
             </li>
           ))}
           {monthEvents.map((e) => (
             <li key={e.id} className="flex gap-2">
-              <span className="dot w-24 shrink-0 pt-0.5 text-xs text-sea">{rangeLabel(e.date!.start, e.date!.end)}</span>
+              <span className="dot w-24 shrink-0 text-sea">{rangeLabel(e.date!.start, e.date!.end)}</span>
               <span>
                 {e.name}
                 {e.kind && <span className="label ml-1">{e.kind}</span>}
