@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Manrope } from "next/font/google";
 import localFont from "next/font/local";
 import Link from "next/link";
 import { OWNER, SCHOOL, SITE } from "@/lib/config";
@@ -7,15 +6,8 @@ import { Suspense } from "react";
 import { BottomNav, BottomNavView, LockLink, SideTabs, SideTabsView } from "./site-nav";
 import "./globals.css";
 
-// 본문 한글 Pretendard, 영문 제목·숫자 Manrope, 미니홈피 장식 Galmuri (한글까지 도트, SIL OFL 무료 글꼴)
+// 본문·제목 Pretendard, 미니홈피 글자 Galmuri (한글까지 도트, SIL OFL 무료 글꼴)
 // 글꼴 파일은 빌드할 때 프로젝트에 담겨 서버가 직접 내려 준다.
-const manrope = Manrope({
-  variable: "--font-manrope",
-  subsets: ["latin"],
-  weight: ["500", "700", "800"],
-  display: "swap",
-});
-
 const galmuri = localFont({
   src: [
     { path: "./fonts/Galmuri11.woff2", weight: "400" },
@@ -40,7 +32,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="ko" className={`${manrope.variable} ${galmuri.variable} ${pretendard.variable} h-full antialiased`}>
+    <html lang="ko" className={`${galmuri.variable} ${pretendard.variable} h-full antialiased`}>
       <body className="min-h-full">
         <div className="mx-auto w-full max-w-[1100px] px-2.5 pt-4 pb-28 sm:px-6 sm:pt-8 md:pb-12">
           <div className="relative">

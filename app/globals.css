@@ -36,7 +36,7 @@
   --color-pink: var(--pink);
   --color-pink-pale: var(--pink-pale);
   --font-sans: var(--font-pretendard), system-ui, sans-serif;
-  --font-display: var(--font-manrope), var(--font-pretendard), sans-serif;
+  --font-display: var(--font-pretendard), sans-serif;
   --font-dot: var(--font-galmuri), var(--font-pretendard), monospace;
 }
 
