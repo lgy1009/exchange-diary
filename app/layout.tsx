@@ -46,11 +46,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <div className="relative">
             <div className="frame md:mr-[66px]">
               <header className="flex items-center justify-between border-b border-dashed border-sea-soft px-3 py-2 text-sea">
-                <Link href="/" className="dot text-sm font-bold sm:text-base">
+                <Link href="/" className="font-sans text-xl font-bold whitespace-nowrap sm:text-2xl">
                   {SITE.title}
                 </Link>
                 <span className="flex items-center gap-3">
-                  <span className="dot text-xs text-muted">
+                  <span className="dot text-xs whitespace-nowrap text-muted">
                     {SCHOOL.city.toUpperCase()} · {SCHOOL.semesterStart.slice(0, 4)}
                   </span>
                   <LockLink />

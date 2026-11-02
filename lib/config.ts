@@ -22,8 +22,8 @@ export const SCHOOL = {
 
 // 화면에 보이는 이름. 후보를 바꿀 때는 여기만 고친다.
 export const SITE = {
-  title: "Hola! 가영이네", // 맨 위 제목 줄
-  profileName: "가영 · 말라가 교환학생", // 프로필 카드 이름
+  title: "ⓖⓐⓨⓞⓤⓝⓖ ♡", // 맨 위 제목 줄
+  profileName: "♡가영♡", // 프로필 카드 이름
 } as const;
 
 // 사이트 색 (DESIGN §6). 실제 화면 색은 app/globals.css에서 같은 값으로 쓴다.
