@@ -10,9 +10,9 @@ import { getDiaryData } from "@/lib/diary-data";
 import { travelStats, tripPoints, visitsOf } from "@/lib/stats";
 import { isLocked } from "@/lib/transform";
 import { isUnlocked } from "@/lib/viewer";
+import { PostageStamp } from "../../country-stamp";
 import { EuropeMap } from "../../europe-map";
 import { EntryItem, TripItem } from "../../items";
-import { PassportStamp } from "../../passport-stamp";
 
 // 목록에 있는 나라만 페이지를 미리 만든다 (그 밖의 주소는 404)
 export function generateStaticParams() {
@@ -59,7 +59,7 @@ async function CountryContent({ code, unlocked }: { code: CountryCode; unlocked:
           ← 지도
         </Link>
         <div className="mt-4 flex items-center gap-4">
-          <PassportStamp code={code} name={nameOf(code)} date={stamp?.firstVisit} size={132} />
+          <PostageStamp code={code} name={nameOf(code)} date={stamp?.firstVisit} size={112} />
           <div>
             <h1 className="text-2xl font-semibold">{nameOf(code)}</h1>
             <p className="label mt-1">

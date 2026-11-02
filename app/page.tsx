@@ -12,6 +12,7 @@ import type { DiaryData, Profile } from "@/lib/types";
 import { LocalClock } from "./local-clock";
 import { NotionImage } from "./notion-image";
 import { EuropeMap, type MapPoint } from "./europe-map";
+import { Flag } from "./flag";
 
 export default function HomePage() {
   return (
@@ -120,10 +121,10 @@ function CountriesCard({ stats, points }: { stats: TravelStats; points: MapPoint
         <EuropeMap visits={visitsOf(stats)} points={points} compact />
       </div>
       <div className="mt-3 flex flex-wrap gap-1.5">
-        {stats.stamps.length === 0 && <p className="label">아직 찍힌 도장이 없어요.</p>}
+        {stats.stamps.length === 0 && <p className="label">아직 모은 우표가 없어요.</p>}
         {stats.stamps.map((s) => (
           <Link key={s.code} href={`/map/${s.code.toLowerCase()}`} className="stamp hover:bg-terracotta hover:text-white" title={s.name}>
-            {s.code} {s.firstVisit ? short(s.firstVisit) : ""}
+            <Flag code={s.code} width={15} /> {s.code} {s.firstVisit ? short(s.firstVisit) : ""}
           </Link>
         ))}
       </div>

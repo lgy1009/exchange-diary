@@ -9,7 +9,7 @@ import { short } from "@/lib/dates";
 import { travelStats, tripPoints, visitsOf } from "@/lib/stats";
 import { isUnlocked } from "@/lib/viewer";
 import { EuropeMap } from "../europe-map";
-import { PassportStamp } from "../passport-stamp";
+import { Flag } from "../flag";
 
 export const metadata: Metadata = { title: "지도" };
 
@@ -48,7 +48,7 @@ async function MapContent({ unlocked }: { unlocked: boolean }) {
         <div className="mb-3 flex items-baseline justify-between">
           <h2 className="label">나라별 기록</h2>
           <Link href="/stamps" className="label hover:text-sea">
-            여권 도장 →
+            우표첩 →
           </Link>
         </div>
         {stats.stamps.length === 0 && <p className="text-sm text-muted">아직 다녀온 나라가 없어요.</p>}
@@ -56,7 +56,7 @@ async function MapContent({ unlocked }: { unlocked: boolean }) {
           {stats.stamps.map((s) => (
             <li key={s.code}>
               <Link href={`/map/${s.code.toLowerCase()}`} className="flex items-center gap-3 border border-line bg-paper p-3 hover:bg-sand-pale">
-                <PassportStamp code={s.code} name={s.name} date={s.firstVisit} size={46} mini />
+                <Flag code={s.code} width={36} />
                 <span className="min-w-0 flex-1">
                   <span className="block font-semibold">{s.name}</span>
                   <span className="label">
