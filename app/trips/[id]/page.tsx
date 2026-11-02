@@ -57,10 +57,10 @@ async function TripContent({ id, unlocked }: { id: string; unlocked: boolean }) 
             {c} {nameOf(c)}
           </Link>
         ))}
-        {trip.place && <span className="rounded-full bg-paper px-3 py-0.5 text-sm text-muted">{trip.place}</span>}
+        {trip.place && <span className="chip">{trip.place}</span>}
       </div>
       {trip.summary && <p className="mt-4 text-lg leading-relaxed">{trip.summary}</p>}
-      {trip.hasCover && <NotionImage pageId={trip.id} alt={trip.title} className="mt-6 w-full rounded-[10px] bg-sand-pale" />}
+      {trip.hasCover && <NotionImage pageId={trip.id} alt={trip.title} className="mt-6 w-full border-[1.5px] border-ink bg-sand-pale" />}
       <div className="mt-6">
         <NotionBody blocks={blocks} />
       </div>

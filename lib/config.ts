@@ -20,13 +20,13 @@ export const SCHOOL = {
   lng: -4.4214,
 } as const;
 
-// 말라가 색 (DESIGN §6). 실제 화면 색은 app/globals.css에서 같은 값으로 쓴다.
+// 사이트 색 (DESIGN §6). 실제 화면 색은 app/globals.css에서 같은 값으로 쓴다.
 export const COLORS = {
-  sea: "#1D6A96", // 지중해 블루 — 중심 색
-  terracotta: "#C8643B", // 알카사바 테라코타 — 날짜·도장·다녀온 나라
-  sand: "#E8C48A", // 해변 모래
-  bougainvillea: "#D64F86", // 부겐빌레아 분홍 — 작은 포인트
-  paper: "#F6EFE2", // 바탕 (흰 벽 + 햇살)
+  sea: "#2440E6", // 코발트 블루 — 중심 색
+  terracotta: "#DB4500", // 오렌지 — 날짜·도장·다녀온 나라
+  sand: "#FFD84D", // 노랑
+  bougainvillea: "#C40D6E", // 핫핑크 — 작은 포인트
+  paper: "#E9EEFF", // 창 안쪽 바탕
 } as const;
 
 // 노션 데이터베이스 이름. 노션에서 이 이름과 똑같이 만들면 사이트가 이름으로 찾는다.

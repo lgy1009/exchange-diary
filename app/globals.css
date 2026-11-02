@@ -1,21 +1,23 @@
 @import "tailwindcss";
 
-/* 현대적인 미니홈피 · 말라가 색 (DESIGN §6) — 둥근 카드, 그림자 없음 */
+/* 요즘식 미니홈피 (DESIGN §6) — 파란 벽지 위의 또렷한 창, 굵은 선, 각진 모서리, 쨍한 색
+   색 이름(sea, terracotta…)은 코드 곳곳에서 쓰므로 그대로 두고 값만 바꿨다. 색을 바꿀 때는 여기만 고친다. */
 :root {
-  --paper: #f6efe2; /* 바탕: 흰 벽 + 햇살 */
-  --card: #fffdf8; /* 카드 바탕 */
-  --ink: #2a2620; /* 본문 글자 */
-  --muted: #9a8a76; /* 라벨·보조 글자 */
-  --line: #ece3d3; /* 가는 선 */
-  --sea: #1d6a96; /* 지중해 블루: 중심 색 */
-  --sea-soft: #8fb8cf; /* 선택 안 된 탭 */
-  --sea-pale: #d9ebf3; /* 지도 바다 */
-  --terracotta: #c8643b; /* 알카사바: 날짜·도장 */
-  --terracotta-soft: #e8a07a;
-  --sand: #e8c48a; /* 해변 모래: 사진 자리 */
-  --sand-pale: #f3ead9; /* 안 간 나라 */
-  --pink: #d64f86; /* 부겐빌레아: 작은 포인트 */
-  --pink-pale: #f8dfe8;
+  --wall: #2440e6; /* 창 바깥 벽지 */
+  --paper: #e9eeff; /* 창 안쪽 바탕 */
+  --card: #ffffff; /* 카드 바탕 */
+  --ink: #14162b; /* 글자·굵은 선 */
+  --muted: #5a6080; /* 라벨·보조 글자 */
+  --line: #c9d1f2; /* 가는 선 */
+  --sea: #2440e6; /* 코발트 블루: 중심 색 */
+  --sea-soft: #a9b6f5;
+  --sea-pale: #dce4ff; /* 지도 바다 */
+  --terracotta: #db4500; /* 오렌지: 날짜·도장·다녀온 나라 */
+  --terracotta-soft: #ff8a4d;
+  --sand: #ffd84d; /* 노랑: 사진 자리·내 일정 탭 */
+  --sand-pale: #f6f7fc; /* 안 간 나라 */
+  --pink: #c40d6e; /* 핫핑크: 작은 포인트 */
+  --pink-pale: #ffd9ec;
 }
 
 @theme inline {
@@ -39,11 +41,14 @@
 }
 
 html {
-  background: var(--paper);
+  background: var(--wall);
 }
 
+/* 벽지: 파란 바탕에 작은 점 무늬 */
 body {
-  background: var(--paper);
+  background-color: var(--wall);
+  background-image: radial-gradient(rgb(255 255 255 / 0.16) 1px, transparent 1px);
+  background-size: 14px 14px;
   color: var(--ink);
   font-family: var(--font-sans);
   word-break: keep-all;
@@ -62,11 +67,33 @@ body {
   letter-spacing: 0.02em;
 }
 
-/* 둥근 카드 */
+/* 사이트 전체를 담는 창 */
+.frame {
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  box-shadow: 5px 5px 0 var(--ink);
+}
+
+/* 각진 카드 */
 .card {
   background: var(--card);
-  border-radius: 14px;
-  padding: 16px;
+  border: 1.5px solid var(--ink);
+  padding: 12px;
+}
+
+/* 카드 머리줄: 제목 + 더 보기 */
+.card-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  padding-bottom: 5px;
+  border-bottom: 1.5px solid var(--ink);
+}
+
+.card-head h2 {
+  font-weight: 700;
+  color: var(--ink);
 }
 
 /* 카드 안 작은 라벨 */
@@ -75,15 +102,65 @@ body {
   color: var(--muted);
 }
 
+/* 버튼: 눌리는 느낌의 각진 단추 */
+.btn {
+  display: inline-block;
+  background: var(--sea);
+  color: #fff;
+  border: 1.5px solid var(--ink);
+  box-shadow: 2px 2px 0 var(--ink);
+  padding: 6px 18px;
+  font-size: 0.875rem;
+}
+
+.btn:hover {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0 var(--ink);
+}
+
+.btn:disabled {
+  opacity: 0.6;
+}
+
+.btn-hot {
+  background: var(--terracotta);
+}
+
+/* 작은 꼬리표 (태그·장소) */
+.chip {
+  display: inline-block;
+  background: var(--paper);
+  border: 1px solid var(--ink);
+  color: var(--ink);
+  padding: 1px 9px;
+  font-size: 0.8125rem;
+}
+
+.chip-pink {
+  background: var(--pink-pale);
+  color: var(--pink);
+}
+
+/* 입력 칸 */
+.field {
+  background: var(--card);
+  border: 1.5px solid var(--ink);
+  padding: 8px 12px;
+  outline: none;
+}
+
+.field:focus {
+  box-shadow: 2px 2px 0 var(--sea);
+}
+
 /* 여권 도장 모양 칩 */
 .stamp {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  border: 1px dashed var(--terracotta);
+  border: 1.5px solid var(--terracotta);
   color: var(--terracotta);
-  border-radius: 999px;
-  padding: 1px 9px;
+  padding: 1px 7px;
   font-size: 0.72rem;
   font-family: var(--font-dot);
   white-space: nowrap;

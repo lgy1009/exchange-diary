@@ -46,7 +46,7 @@ async function EntryContent({ id, unlocked }: { id: string; unlocked: boolean })
         <p className="dot mt-4 text-sm text-terracotta">{entry.date ? dayOf(entry.date.start).replaceAll("-", ".") : ""}</p>
         <h1 className="mt-2 text-lg font-semibold">비공개 일기예요</h1>
         <p className="label mt-1">비밀번호를 입력하면 볼 수 있어요.</p>
-        <Link href={`/unlock?next=/diary/${entry.id}`} className="mt-6 rounded-full bg-sea px-5 py-2 text-sm text-white hover:bg-sea/90">
+        <Link href={`/unlock?next=/diary/${entry.id}`} className="mt-6 btn">
           비밀번호 입력
         </Link>
         <Link href="/diary" className="label mt-4 hover:text-sea">
@@ -69,15 +69,15 @@ async function EntryContent({ id, unlocked }: { id: string; unlocked: boolean })
       </p>
       <h1 className="mt-1.5 text-2xl font-bold leading-snug sm:text-3xl">{entry.title}</h1>
       <div className="mt-3 flex flex-wrap gap-1.5">
-        {entry.mood && <span className="rounded-full bg-pink-pale px-3 py-0.5 text-sm text-pink">{entry.mood}</span>}
+        {entry.mood && <span className="chip chip-pink">{entry.mood}</span>}
         {entry.tags.map((t) => (
-          <span key={t} className="rounded-full bg-paper px-3 py-0.5 text-sm text-muted">
+          <span key={t} className="chip">
             #{t}
           </span>
         ))}
-        {!entry.isPublic && <span className="rounded-full bg-paper px-3 py-0.5 text-sm text-muted">🔒 나만 보기</span>}
+        {!entry.isPublic && <span className="chip">🔒 나만 보기</span>}
       </div>
-      {entry.hasCover && <NotionImage pageId={entry.id} alt={entry.title} className="mt-6 w-full rounded-[10px] bg-sand-pale" />}
+      {entry.hasCover && <NotionImage pageId={entry.id} alt={entry.title} className="mt-6 w-full border-[1.5px] border-ink bg-sand-pale" />}
       <div className="mt-6">
         <NotionBody blocks={blocks} />
       </div>

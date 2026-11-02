@@ -10,9 +10,9 @@ export function TripItem({ trip }: { trip: Trip }) {
   return (
     <Link href={`/trips/${trip.id}`} className="card group flex gap-3 p-3 hover:bg-white">
       {trip.hasCover ? (
-        <NotionImage pageId={trip.id} alt={trip.title} className="aspect-square w-20 shrink-0 rounded-lg bg-sand" />
+        <NotionImage pageId={trip.id} alt={trip.title} className="aspect-square w-20 shrink-0 border-[1.5px] border-ink bg-sand" />
       ) : (
-        <div className="aspect-square w-20 shrink-0 rounded-lg bg-sea-pale" />
+        <div className="aspect-square w-20 shrink-0 border-[1.5px] border-ink bg-sea-pale" />
       )}
       <div className="min-w-0">
         <p className="dot text-xs text-terracotta">{trip.period ? rangeLabel(trip.period.start, trip.period.end) : ""}</p>

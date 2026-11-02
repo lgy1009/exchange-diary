@@ -40,21 +40,22 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="ko" className={`${manrope.variable} ${dotGothic.variable} ${pretendard.variable} h-full antialiased`}>
       <body className="min-h-full">
-        <div className="mx-auto w-full max-w-[1100px] px-3 pt-5 pb-28 sm:px-6 sm:pt-8 md:pb-12">
-          <header className="mb-4 flex items-baseline justify-between px-1 md:mr-[76px]">
-            <Link href="/" className="display text-lg text-sea sm:text-xl">
-              {OWNER.en}
-              <span className="text-terracotta">.</span>MÁLAGA
-            </Link>
-            <span className="flex items-baseline gap-3">
-              <span className="dot text-xs text-muted">
-                {SCHOOL.city.toUpperCase()} · {SCHOOL.semesterStart.slice(0, 4)}
-              </span>
-              <LockLink />
-            </span>
-          </header>
+        <div className="mx-auto w-full max-w-[1100px] px-2.5 pt-4 pb-28 sm:px-6 sm:pt-8 md:pb-12">
           <div className="relative">
-            <main className="md:mr-[76px]">{children}</main>
+            <div className="frame md:mr-[72px]">
+              <header className="flex items-center justify-between border-b-2 border-ink bg-sea px-3 py-2 text-white">
+                <Link href="/" className="dot text-base sm:text-lg">
+                  {OWNER.en}.MÁLAGA
+                </Link>
+                <span className="flex items-center gap-3">
+                  <span className="dot text-xs">
+                    {SCHOOL.city.toUpperCase()} · {SCHOOL.semesterStart.slice(0, 4)}
+                  </span>
+                  <LockLink />
+                </span>
+              </header>
+              <main className="p-2 sm:p-2.5">{children}</main>
+            </div>
             <Suspense fallback={<SideTabsView />}>
               <SideTabs />
             </Suspense>

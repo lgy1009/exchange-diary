@@ -48,9 +48,9 @@ export function EuropeMap({
       role="img"
       aria-label="다녀온 나라를 색칠한 유럽 지도"
     >
-      <rect y={top} width={MAP_WIDTH} height={MAP_HEIGHT - top} fill="var(--sea-pale)" rx={compact ? 0 : 18} />
+      <rect y={top} width={MAP_WIDTH} height={MAP_HEIGHT - top} fill="var(--sea-pale)" rx={0} />
       {MAP_COUNTRIES.map((c, i) => {
-        const shape = <path d={c.d} fill={fillOf(c.code)} stroke="var(--card)" strokeWidth={1.2} />;
+        const shape = <path d={c.d} fill={fillOf(c.code)} stroke="var(--ink)" strokeWidth={0.7} />;
         const visited = c.code && (visits[c.code] ?? 0) > 0;
         return visited ? (
           <a key={i} href={`/map/${c.code!.toLowerCase()}`} className="cursor-pointer hover:opacity-80">

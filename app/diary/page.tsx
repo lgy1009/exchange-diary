@@ -48,16 +48,16 @@ async function DiaryContent({ unlocked }: { unlocked: boolean }) {
               <Link href={`/diary/${e.id}`} className="card group block p-2.5 hover:bg-white">
                 {isLocked(e) ? (
                   <>
-                    <div className="flex aspect-[4/3] items-center justify-center rounded-lg bg-paper text-2xl">🔒</div>
+                    <div className="flex aspect-[4/3] items-center justify-center border-[1.5px] border-ink bg-paper text-2xl">🔒</div>
                     <p className="dot mt-2 text-xs text-terracotta">{date}</p>
                     <p className="mt-0.5 text-sm text-muted">비공개 일기</p>
                   </>
                 ) : (
                   <>
                     {e.hasCover ? (
-                      <NotionImage pageId={e.id} alt={e.title} className="aspect-[4/3] w-full rounded-lg bg-sand-pale" />
+                      <NotionImage pageId={e.id} alt={e.title} className="aspect-[4/3] w-full border-[1.5px] border-ink bg-sand-pale" />
                     ) : (
-                      <div className="flex aspect-[4/3] items-center justify-center rounded-lg bg-sea-pale text-2xl">
+                      <div className="flex aspect-[4/3] items-center justify-center border-[1.5px] border-ink bg-sea-pale text-2xl">
                         {e.mood?.split(" ")[0] ?? "✎"}
                       </div>
                     )}

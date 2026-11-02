@@ -44,7 +44,7 @@ export function GuestbookForm() {
         maxLength={NAME_MAX}
         placeholder="이름 (별명도 좋아요)"
         aria-label="이름"
-        className="rounded-[10px] border border-line bg-paper px-3 py-2 outline-none focus:border-sea"
+        className="field"
       />
       <textarea
         value={message}
@@ -53,7 +53,7 @@ export function GuestbookForm() {
         rows={3}
         placeholder="한마디 남겨 주세요"
         aria-label="남길 말"
-        className="resize-none rounded-[10px] border border-line bg-paper px-3 py-2 outline-none focus:border-sea"
+        className="resize-none field"
       />
       {/* 사람에게는 보이지 않는 칸. 로봇이 채우면 조용히 무시된다 */}
       <input
@@ -72,7 +72,7 @@ export function GuestbookForm() {
         <button
           type="submit"
           disabled={state.kind === "sending"}
-          className="dot shrink-0 rounded-full bg-sea px-4 py-1.5 text-sm text-white hover:bg-sea/90 disabled:opacity-60"
+          className="dot shrink-0 btn disabled:opacity-60"
         >
           {state.kind === "sending" ? "SENDING…" : "SEND"}
         </button>

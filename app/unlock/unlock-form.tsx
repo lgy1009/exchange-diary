@@ -57,7 +57,7 @@ export function UnlockForm() {
         <p className="text-3xl">🔓</p>
         <p className="font-semibold">비공개 기록이 열려 있어요</p>
         <p className="label">이 기기에서는 30일 동안 열려 있어요. 다른 사람과 같이 쓰는 기기라면 잠가 주세요.</p>
-        <button onClick={lock} className="dot mt-2 rounded-full bg-terracotta px-5 py-2 text-sm text-white hover:bg-terracotta/90">
+        <button onClick={lock} className="dot mt-2 btn btn-hot">
           LOCK
         </button>
       </div>
@@ -76,7 +76,7 @@ export function UnlockForm() {
         autoComplete="current-password"
         aria-label="비밀번호"
         autoFocus
-        className="mt-2 w-full rounded-[10px] border border-line bg-paper px-3 py-2 text-center outline-none focus:border-sea"
+        className="mt-2 w-full field text-center"
       />
       {state.error && (
         <p className="text-sm text-pink" role="alert">
@@ -86,7 +86,7 @@ export function UnlockForm() {
       <button
         type="submit"
         disabled={state.busy}
-        className="dot w-full rounded-full bg-sea px-5 py-2 text-sm text-white hover:bg-sea/90 disabled:opacity-60"
+        className="dot w-full btn disabled:opacity-60"
       >
         {state.busy ? "CHECKING…" : "UNLOCK"}
       </button>

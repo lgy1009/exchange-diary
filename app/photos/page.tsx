@@ -72,10 +72,10 @@ async function PhotosContent({ unlocked }: { unlocked: boolean }) {
       <ul className="grid grid-cols-3 gap-1.5 sm:grid-cols-4 md:grid-cols-5">
         {photos.map((ph) => (
           <li key={ph.key}>
-            <Link href={ph.href} className="group relative block overflow-hidden rounded-lg bg-sand-pale" title={ph.title}>
+            <Link href={ph.href} className="group relative block overflow-hidden border-[1.5px] border-ink bg-sand-pale" title={ph.title}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={ph.src} alt={ph.title} loading="lazy" decoding="async" className="aspect-square w-full object-cover transition-transform group-hover:scale-105" />
-              <span className="dot absolute bottom-1 left-1 rounded bg-card/85 px-1.5 text-[10px] text-terracotta">{ph.date}</span>
+              <span className="dot absolute bottom-1 left-1 bg-card px-1.5 text-[10px] text-terracotta">{ph.date}</span>
             </Link>
           </li>
         ))}
