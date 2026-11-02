@@ -61,7 +61,7 @@ async function CountryContent({ code, unlocked }: { code: CountryCode; unlocked:
         <div className="mt-4 flex items-center gap-4">
           <div className="flex h-24 w-24 shrink-0 rotate-[-8deg] flex-col items-center justify-center rounded-full border-2 border-dashed border-terracotta text-terracotta">
             <span className="display text-3xl">{code}</span>
-            <span className="dot text-[10px]">{stamp?.firstVisit ? short(stamp.firstVisit) : "NOT YET"}</span>
+            <span className="dot text-xs">{stamp?.firstVisit ? short(stamp.firstVisit) : "NOT YET"}</span>
           </div>
           <div>
             <h1 className="text-2xl font-semibold">{nameOf(code)}</h1>

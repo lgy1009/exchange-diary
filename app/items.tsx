@@ -31,14 +31,14 @@ export function EntryItem({ entry }: { entry: Entry | LockedEntry }) {
   if (isLocked(entry)) {
     return (
       <Link href={`/diary/${entry.id}`} className="card flex items-center gap-3 p-3 text-muted hover:bg-white">
-        <span className="dot w-12 shrink-0 text-terracotta">{date}</span>
+        <span className="dot w-12 shrink-0 pt-0.5 text-xs text-terracotta">{date}</span>
         <span>🔒 비공개 일기</span>
       </Link>
     );
   }
   return (
     <Link href={`/diary/${entry.id}`} className="card group flex items-center gap-3 p-3 hover:bg-white">
-      <span className="dot w-12 shrink-0 text-terracotta">{date}</span>
+      <span className="dot w-12 shrink-0 pt-0.5 text-xs text-terracotta">{date}</span>
       <span className="min-w-0 flex-1">
         <span className="block truncate group-hover:text-sea">{entry.title}</span>
         {entry.place && <span className="label block truncate">{entry.place}</span>}

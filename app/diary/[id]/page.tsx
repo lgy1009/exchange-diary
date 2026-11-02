@@ -43,7 +43,7 @@ async function EntryContent({ id, unlocked }: { id: string; unlocked: boolean })
     return (
       <article className="card mx-auto flex max-w-xl flex-col items-center py-14 text-center">
         <p className="text-4xl">🔒</p>
-        <p className="dot mt-4 text-sm text-terracotta">{entry.date ? dayOf(entry.date.start).replaceAll("-", ".") : ""}</p>
+        <p className="dot mt-4 text-xs text-terracotta">{entry.date ? dayOf(entry.date.start).replaceAll("-", ".") : ""}</p>
         <h1 className="mt-2 text-lg font-semibold">비공개 일기예요</h1>
         <p className="label mt-1">비밀번호를 입력하면 볼 수 있어요.</p>
         <Link href={`/unlock?next=/diary/${entry.id}`} className="mt-6 btn">
@@ -63,7 +63,7 @@ async function EntryContent({ id, unlocked }: { id: string; unlocked: boolean })
       <Link href="/diary" className="label hover:text-sea">
         ← 일기 목록
       </Link>
-      <p className="dot mt-5 text-sm text-terracotta">
+      <p className="dot mt-5 text-xs text-terracotta">
         {entry.date ? dayOf(entry.date.start).replaceAll("-", ".") : ""} · {nameOf(entry.country)}
         {entry.place ? ` · ${entry.place}` : ""}
       </p>

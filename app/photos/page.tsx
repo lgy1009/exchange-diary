@@ -75,7 +75,7 @@ async function PhotosContent({ unlocked }: { unlocked: boolean }) {
             <Link href={ph.href} className="group relative block overflow-hidden border border-line bg-sand-pale" title={ph.title}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={ph.src} alt={ph.title} loading="lazy" decoding="async" className="aspect-square w-full object-cover transition-transform group-hover:scale-105" />
-              <span className="dot absolute bottom-1 left-1 bg-card px-1.5 text-[10px] text-terracotta">{ph.date}</span>
+              <span className="dot absolute bottom-1 left-1 bg-card px-1.5 text-xs text-terracotta">{ph.date}</span>
             </Link>
           </li>
         ))}

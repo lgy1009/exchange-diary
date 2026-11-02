@@ -7,8 +7,8 @@
   --paper: #effaf6; /* 창 안쪽 바탕 */
   --card: #ffffff; /* 카드 바탕 */
   --ink: #16302b; /* 글자·굵은 선 */
-  --muted: #4c6a63; /* 라벨·보조 글자 */
-  --line: #a9d6c9; /* 가는 선 */
+  --muted: #3f5a53; /* 라벨·보조 글자 */
+  --line: #8cc4b4; /* 가는 선 */
   --sea: #0b7a70; /* 진한 청록: 중심 색 */
   --sea-soft: #86d3c1;
   --sea-pale: #d3f1e8; /* 지도 바다 */
@@ -79,7 +79,7 @@ body {
 .card {
   background: var(--card);
   border: 1px solid var(--line);
-  padding: 10px;
+  padding: 14px;
 }
 
 /* 카드 머리줄: 제목 + 더 보기 */
@@ -87,12 +87,14 @@ body {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  margin-bottom: 8px;
-  padding-bottom: 5px;
+  margin-bottom: 10px;
+  padding-bottom: 6px;
   border-bottom: 1px dashed var(--sea-soft);
 }
 
 .card-head h2 {
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
   font-weight: 700;
   color: var(--sea);
 }
@@ -110,7 +112,7 @@ body {
   background: var(--paper);
   color: var(--sea);
   border: 1px solid var(--sea);
-  padding: 4px 14px;
+  padding: 7px 16px;
   font-family: var(--font-dot);
   font-size: 0.75rem;
 }
@@ -149,7 +151,7 @@ body {
 .field {
   background: var(--card);
   border: 1px solid var(--line);
-  padding: 6px 9px;
+  padding: 9px 11px;
   outline: none;
 }
 
@@ -165,7 +167,7 @@ body {
   border: 1px dashed var(--terracotta);
   color: var(--terracotta);
   padding: 1px 7px;
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   font-family: var(--font-dot);
   white-space: nowrap;
 }

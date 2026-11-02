@@ -45,8 +45,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <div className="mx-auto w-full max-w-[1100px] px-2.5 pt-4 pb-28 sm:px-6 sm:pt-8 md:pb-12">
           <div className="relative">
             <div className="frame md:mr-[66px]">
-              <header className="flex items-center justify-between border-b border-dashed border-sea-soft px-3 py-2 text-sea">
-                <Link href="/" className="dot text-sm font-bold sm:text-base">
+              <header className="flex items-center justify-between border-b border-dashed border-sea-soft px-3.5 py-2.5 text-sea">
+                <Link href="/" className="dot text-2xl">
                   {OWNER.name}의 미니홈피
                 </Link>
                 <span className="flex items-center gap-3">
@@ -56,7 +56,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
                   <LockLink />
                 </span>
               </header>
-              <main className="dot p-2 text-[13px] sm:p-2.5">{children}</main>
+              <main className="p-2.5 text-[15px] sm:p-3">{children}</main>
             </div>
             <Suspense fallback={<SideTabsView />}>
               <SideTabs />

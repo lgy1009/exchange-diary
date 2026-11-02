@@ -44,7 +44,7 @@ async function StampsContent({ unlocked }: { unlocked: boolean }) {
           ].map(([n, en, ko]) => (
             <div key={en} className="border border-line bg-paper py-3">
               <p className="display text-3xl text-sea">{n}</p>
-              <p className="dot text-[10px] text-muted">{en}</p>
+              <p className="dot text-xs text-muted">{en}</p>
               <p className="label">{ko}</p>
             </div>
           ))}
@@ -64,10 +64,10 @@ async function StampsContent({ unlocked }: { unlocked: boolean }) {
                   style={{ borderColor: ink, color: ink, transform: `rotate(${TILTS[i % TILTS.length]}deg)` }}
                   title={`${s.name} — 여행 ${s.trips} · 일기 ${s.entries}`}
                 >
-                  <span className="dot text-[10px]">ENTRY</span>
+                  <span className="dot text-xs">ENTRY</span>
                   <span className="display text-3xl leading-none">{s.code}</span>
                   <span className="mt-1 text-xs font-semibold">{s.name}</span>
-                  <span className="dot mt-0.5 text-[10px]">{s.firstVisit?.replaceAll("-", ".") ?? ""}</span>
+                  <span className="dot mt-0.5 text-xs">{s.firstVisit?.replaceAll("-", ".") ?? ""}</span>
                 </Link>
               </li>
             );
