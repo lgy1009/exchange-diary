@@ -19,6 +19,8 @@
 - 국내 언론사처럼 한국 사이트를 읽는 앱은 `vercel.json`에서 **서울 리전(`icn1`)** 을 지정한다.
 - 처음 배포에서 Vercel이 `.env.local`을 만들고 `.gitignore`를 고친다 → 커밋 전에 확인한다.
 - 함수 실행 시간이 길면 라우트에 `export const maxDuration = 60;`.
+- `scripts/deploy.sh`는 환경 변수를 등록하지 않는다 → 빌드 때 노션을 읽는 앱은 **첫 배포 전에** Vercel 프로젝트를 만들고 환경 변수를 넣는다.
+- `globals.css`를 스크립트로 고치면 개발 서버가 옛 CSS를 계속 줄 수 있다 → 실제로 내려온 CSS를 확인하고, 다르면 서버를 멈추고 `.next`를 치운 뒤 다시 켠다.
 
 ## 보안
 - 토큰은 `.env`에서 읽어 쓰고 **출력하지 않는다.** 푸시는 `git -c http.extraheader="Authorization: Basic ..."` 방식으로 하고, 원격 주소에 토큰을 남기지 않는다. 출력은 `sed`로 토큰을 가린다.
