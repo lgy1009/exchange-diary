@@ -1,21 +1,21 @@
 @import "tailwindcss";
 
-/* 요즘식 미니홈피 (DESIGN §6) — 파란 벽지 위의 또렷한 창, 굵은 선, 각진 모서리, 쨍한 색
+/* 요즘식 미니홈피 (DESIGN §6) — 민트 벽지 위의 또렷한 창, 굵은 선, 각진 모서리, 쨍한 색
    색 이름(sea, terracotta…)은 코드 곳곳에서 쓰므로 그대로 두고 값만 바꿨다. 색을 바꿀 때는 여기만 고친다. */
 :root {
-  --wall: #2440e6; /* 창 바깥 벽지 */
-  --paper: #e9eeff; /* 창 안쪽 바탕 */
+  --wall: #bdeadb; /* 창 바깥 벽지 */
+  --paper: #effaf6; /* 창 안쪽 바탕 */
   --card: #ffffff; /* 카드 바탕 */
-  --ink: #14162b; /* 글자·굵은 선 */
-  --muted: #5a6080; /* 라벨·보조 글자 */
-  --line: #c9d1f2; /* 가는 선 */
-  --sea: #2440e6; /* 코발트 블루: 중심 색 */
-  --sea-soft: #a9b6f5;
-  --sea-pale: #dce4ff; /* 지도 바다 */
+  --ink: #16302b; /* 글자·굵은 선 */
+  --muted: #4c6a63; /* 라벨·보조 글자 */
+  --line: #bfe3d8; /* 가는 선 */
+  --sea: #0b7a70; /* 진한 청록: 중심 색 */
+  --sea-soft: #86d3c1;
+  --sea-pale: #d3f1e8; /* 지도 바다 */
   --terracotta: #db4500; /* 오렌지: 날짜·도장·다녀온 나라 */
   --terracotta-soft: #ff8a4d;
   --sand: #ffd84d; /* 노랑: 사진 자리·내 일정 탭 */
-  --sand-pale: #f6f7fc; /* 안 간 나라 */
+  --sand-pale: #fbfdfc; /* 안 간 나라 */
   --pink: #c40d6e; /* 핫핑크: 작은 포인트 */
   --pink-pale: #ffd9ec;
 }
@@ -37,17 +37,17 @@
   --color-pink-pale: var(--pink-pale);
   --font-sans: var(--font-pretendard), system-ui, sans-serif;
   --font-display: var(--font-manrope), var(--font-pretendard), sans-serif;
-  --font-dot: var(--font-dotgothic), var(--font-pretendard), monospace;
+  --font-dot: var(--font-galmuri), var(--font-pretendard), monospace;
 }
 
 html {
   background: var(--wall);
 }
 
-/* 벽지: 파란 바탕에 작은 점 무늬 */
+/* 벽지: 민트 바탕에 작은 흰 점 무늬 */
 body {
   background-color: var(--wall);
-  background-image: radial-gradient(rgb(255 255 255 / 0.16) 1px, transparent 1px);
+  background-image: radial-gradient(rgb(255 255 255 / 0.65) 1px, transparent 1px);
   background-size: 14px 14px;
   color: var(--ink);
   font-family: var(--font-sans);
@@ -64,7 +64,6 @@ body {
 /* 미니홈피 장식 글꼴 (TODAY, 탭, D-day 등에만) */
 .dot {
   font-family: var(--font-dot);
-  letter-spacing: 0.02em;
 }
 
 /* 사이트 전체를 담는 창 */
@@ -88,16 +87,17 @@ body {
   justify-content: space-between;
   margin-bottom: 8px;
   padding-bottom: 5px;
-  border-bottom: 1.5px solid var(--ink);
+  border-bottom: 1.5px dashed var(--ink);
 }
 
 .card-head h2 {
   font-weight: 700;
-  color: var(--ink);
+  color: var(--sea);
 }
 
 /* 카드 안 작은 라벨 */
 .label {
+  font-family: var(--font-dot);
   font-size: 0.75rem;
   color: var(--muted);
 }
@@ -110,7 +110,8 @@ body {
   border: 1.5px solid var(--ink);
   box-shadow: 2px 2px 0 var(--ink);
   padding: 6px 18px;
-  font-size: 0.875rem;
+  font-family: var(--font-dot);
+  font-size: 0.75rem;
 }
 
 .btn:hover {
@@ -132,8 +133,9 @@ body {
   background: var(--paper);
   border: 1px solid var(--ink);
   color: var(--ink);
-  padding: 1px 9px;
-  font-size: 0.8125rem;
+  padding: 2px 8px;
+  font-family: var(--font-dot);
+  font-size: 0.75rem;
 }
 
 .chip-pink {

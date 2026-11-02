@@ -22,11 +22,11 @@ export const SCHOOL = {
 
 // 사이트 색 (DESIGN §6). 실제 화면 색은 app/globals.css에서 같은 값으로 쓴다.
 export const COLORS = {
-  sea: "#2440E6", // 코발트 블루 — 중심 색
+  sea: "#0B7A70", // 진한 청록 — 중심 색
   terracotta: "#DB4500", // 오렌지 — 날짜·도장·다녀온 나라
   sand: "#FFD84D", // 노랑
   bougainvillea: "#C40D6E", // 핫핑크 — 작은 포인트
-  paper: "#E9EEFF", // 창 안쪽 바탕
+  paper: "#EFFAF6", // 창 안쪽 바탕
 } as const;
 
 // 노션 데이터베이스 이름. 노션에서 이 이름과 똑같이 만들면 사이트가 이름으로 찾는다.

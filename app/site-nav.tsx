@@ -49,7 +49,7 @@ export function SideTabsView({ isActive = NONE, unlocked = false }: { isActive?:
                   on ? "bg-terracotta text-white" : mine ? "bg-sand text-ink hover:bg-terracotta-soft" : "bg-card text-ink hover:bg-sand"
                 }`}
               >
-                {m.en}
+                {m.label}
               </Link>
             </li>
           );
@@ -69,8 +69,7 @@ export function BottomNavView({ isActive = NONE, unlocked = false }: { isActive?
           return (
             <li key={m.href}>
               <Link href={m.href} className={`flex flex-col items-center gap-0.5 py-2.5 ${on ? "bg-sea text-white" : "text-ink"}`}>
-                <span className="dot text-[10px]">{m.en}</span>
-                <span className={`text-xs ${on ? "font-semibold" : ""}`}>{m.label}</span>
+                <span className="dot text-xs">{m.label}</span>
               </Link>
             </li>
           );
