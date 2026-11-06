@@ -69,10 +69,51 @@ body {
 /* 사이트 전체를 담는 다이어리: 흰 점선 표지 안에 속지 */
 .frame {
   background: var(--card);
-  border: 1px solid var(--sea);
-  border-radius: 10px;
-  outline: 2px dashed var(--sea-soft);
-  outline-offset: 5px;
+  border: 8px solid var(--sea-soft); /* 다이어리 표지 */
+  border-radius: 16px;
+  outline: 1.5px dashed #fff; /* 표지 위 바느질 선 */
+  outline-offset: -5px;
+  box-shadow: 0 0 0 1px var(--sea);
+}
+
+/* 옛날 브라우저처럼 색이 들어간 스크롤바 */
+html {
+  scrollbar-color: var(--sea-soft) var(--paper);
+}
+
+/* 노래 제목이 옆으로 흘러가는 전광판 */
+.marquee {
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.marquee > span {
+  display: inline-block;
+  padding-left: 100%;
+  animation: marquee 12s linear infinite;
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee > span {
+    padding-left: 0;
+    animation: none;
+  }
+}
+
+/* 점선으로 나뉜 목록 */
+.retro-list > li {
+  padding: 3px 0;
+  border-bottom: 1px dotted var(--line);
+}
+
+.retro-list > li:last-child {
+  border-bottom: 0;
 }
 
 /* 얇은 선 카드 */
@@ -95,6 +136,12 @@ body {
 .card-head h2 {
   font-weight: 700;
   color: var(--sea);
+}
+
+.card-head h2::before {
+  content: "▶ ";
+  font-size: 0.6em;
+  vertical-align: 0.15em;
 }
 
 /* 카드 안 작은 라벨 */

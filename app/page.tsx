@@ -75,14 +75,16 @@ function ProfileCard({ profile, today }: { profile: Profile | null; today: strin
       {profile?.status && <p className="mt-3 leading-snug">{profile.status}</p>}
       {profile?.mood && (
         <p className="mt-3">
-          <span className="chip chip-pink">오늘 기분 {profile.mood}</span>
+          <span className="chip chip-pink">TODAY is.. {profile.mood}</span>
         </p>
       )}
       {/* 미니홈피 BGM 자리: 재생은 하지 않고 노션에 적은 노래 제목만 보여 준다 */}
       {profile?.song && (
         <p className="mt-3 flex items-center gap-1.5 border border-dashed border-sea-soft bg-paper px-2 py-1.5 text-xs text-sea">
-          <span aria-hidden>♪</span>
-          <span className="truncate">{profile.song}</span>
+          <span className="shrink-0 font-bold">♬ BGM</span>
+          <span className="marquee min-w-0 flex-1">
+            <span>{profile.song}</span>
+          </span>
         </p>
       )}
       <dl className="mt-auto grid grid-cols-2 gap-2 pt-5 text-center">
@@ -108,7 +110,7 @@ function CountriesCard({ stats, points }: { stats: TravelStats; points: MapPoint
       <div className="card-head">
         <h2 className="label">다녀온 나라</h2>
         <Link href="/map" className="label hover:text-sea">
-          지도 보기 →
+          map +
         </Link>
       </div>
       <div className="mt-3 grid grid-cols-3 gap-2 text-center">
@@ -156,7 +158,7 @@ function PhotosCard({ data }: { data: DiaryData }) {
       <div className="card-head">
         <h2 className="label">사진</h2>
         <Link href="/photos" className="label hover:text-sea">
-          더 보기 →
+          more +
         </Link>
       </div>
       <div className="grid grid-cols-3 gap-1.5">
@@ -186,11 +188,11 @@ function DiaryCard({ data }: { data: DiaryData }) {
       <div className="card-head">
         <h2 className="label">최근 일기</h2>
         <Link href="/diary" className="label hover:text-sea">
-          더 보기 →
+          more +
         </Link>
       </div>
       {recent.length === 0 && <p className="text-sm text-muted">아직 일기가 없어요.</p>}
-      <ul className="flex flex-col gap-1 text-sm">
+      <ul className="retro-list flex flex-col text-sm">
         {recent.map((e) => (
           <li key={e.id}>
             <Link href={`/diary/${e.id}`} className="flex gap-2 hover:text-sea">
@@ -212,11 +214,11 @@ function GuestbookCard({ data }: { data: DiaryData }) {
       <div className="card-head">
         <h2 className="label">방명록</h2>
         <Link href="/guestbook" className="label hover:text-sea">
-          남기기 →
+          write +
         </Link>
       </div>
       {recent.length === 0 && <p className="text-sm text-muted">첫 방명록을 남겨 주세요.</p>}
-      <ul className="flex flex-col gap-1 text-sm">
+      <ul className="retro-list flex flex-col text-sm">
         {recent.map((g) => (
           <li key={g.id} className="truncate">
             <span className="text-sea">{g.name}</span> {g.message}
