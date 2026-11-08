@@ -8,7 +8,7 @@ import { notionGet } from "./notion";
 export type Span = { text: string; bold?: boolean; italic?: boolean; href?: string };
 
 export type Block =
-  | { type: "p" | "h1" | "h2" | "h3" | "quote" | "callout" | "li" | "oli" | "todo"; id: string; spans: Span[]; checked?: boolean; icon?: string }
+  | { type: "p" | "h1" | "h2" | "h3" | "quote" | "callout" | "li" | "oli" | "todo"; id: string; spans: Span[]; checked?: boolean; icon?: string; color?: string }
   | { type: "image"; id: string; caption: string }
   | { type: "divider"; id: string };
 
@@ -52,13 +52,15 @@ function convert(raw: RawBlock): Block | null {
   }
   const t = TEXT_TYPES[raw.type];
   if (!t) return null; // 표·임베드·데이터베이스 등은 아직 보여 주지 않는다
-  const body = raw[raw.type] as { rich_text?: RichText[]; checked?: boolean; icon?: { emoji?: string } };
+  const body = raw[raw.type] as { rich_text?: RichText[]; checked?: boolean; icon?: { emoji?: string }; color?: string };
   return {
     type: t,
     id: raw.id,
     spans: spansOf(body.rich_text),
     checked: t === "todo" ? body.checked === true : undefined,
     icon: t === "callout" ? body.icon?.emoji : undefined,
+    // 콜아웃 색 (포스트잇 색을 고르는 데 쓴다)
+    color: t === "callout" && typeof body.color === "string" ? body.color : undefined,
   } as Block;
 }
 
