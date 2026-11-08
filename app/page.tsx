@@ -36,7 +36,7 @@ async function HomeContent({ unlocked }: { unlocked: boolean }) {
   const stats = travelStats(data);
 
   return (
-    <div className="grid gap-2.5 sm:grid-cols-2 md:grid-cols-[minmax(0,1fr)_minmax(0,1.25fr)_minmax(0,1.25fr)]">
+    <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2md:grid-cols-[minmax(0,1fr)_minmax(0,1.25fr)_minmax(0,1.25fr)]">
       <ProfileCard profile={data.profile} today={today} />
       <CountriesCard stats={stats} points={tripPoints(data.trips)} />
       <div className="flex flex-col gap-2.5 sm:col-span-2 md:col-span-1">

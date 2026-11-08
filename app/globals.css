@@ -82,18 +82,23 @@ html {
 }
 
 /* 노래 제목이 옆으로 흘러가는 전광판 */
+/* 폭을 %로 늘리던 예전 방식은 일부 휴대폰에서 화면 전체를 넓혀서, 칸 너비(cqw) 기준으로 움직인다 */
 .marquee {
   overflow: hidden;
   white-space: nowrap;
+  container-type: inline-size;
+  min-width: 0;
 }
 
 .marquee > span {
   display: inline-block;
-  padding-left: 100%;
   animation: marquee 12s linear infinite;
 }
 
 @keyframes marquee {
+  from {
+    transform: translateX(100cqw);
+  }
   to {
     transform: translateX(-100%);
   }
@@ -101,7 +106,6 @@ html {
 
 @media (prefers-reduced-motion: reduce) {
   .marquee > span {
-    padding-left: 0;
     animation: none;
   }
 }
