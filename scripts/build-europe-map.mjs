@@ -15,9 +15,9 @@ const world = require(`world-atlas/countries-${RES}.json`);
 
 // 그림 크기와 보여 줄 범위 (서쪽 아이슬란드 ~ 동쪽 튀르키예, 남쪽 모로코 ~ 북쪽 노르웨이)
 // 높이는 범위에 맞춰 자동으로 정한다. (북쪽을 너무 올리면 메르카토르 지도라 세로로 길어진다)
-// 아이슬란드·노르웨이 북쪽·튀르키예 동쪽은 잘린다. 그쪽을 여행하면 범위를 넓히고 다시 실행한다.
+// 아이슬란드·노르웨이 북쪽은 잘린다. 모로코 전체(남쪽 27.5도)와 튀르키예 전체(동쪽 45도)가 들어가게 넓혔다.
 const WIDTH = 1000;
-const BOUNDS = { west: -12, east: 31, south: 33.5, north: 61 };
+const BOUNDS = { west: -12, east: 45, south: 27.5, north: 61 };
 
 // 지도 데이터의 숫자 나라 번호(ISO 3166-1 numeric) → 두 글자 코드 (lib/countries.ts 목록만)
 const NUMERIC = {
