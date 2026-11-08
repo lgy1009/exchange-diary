@@ -26,9 +26,8 @@ const pretendard = localFont({
 
 export const metadata: Metadata = {
   title: { default: SITE.title, template: `%s · ${SITE.title}` },
-  // 카카오톡 등에서 링크를 공유할 때 보이는 제목·설명 (그림은 app/opengraph-image.tsx)
-  openGraph: { title: SITE.title, description: `${SCHOOL.nameKo} 교환학생 한 학기의 여행·일기·사진`, type: "website", locale: "ko_KR" },
-  description: `${SCHOOL.nameKo} 교환학생 한 학기의 여행·일기·사진`,
+  // 카카오톡 등에서 링크를 공유할 때 보이는 제목 (설명 문구는 일부러 넣지 않는다)
+  openGraph: { title: SITE.title, type: "website", locale: "ko_KR" },
   robots: { index: false, follow: false }, // 개인 사이트라 검색엔진에 올리지 않는다
 };
 
