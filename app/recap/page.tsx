@@ -1,4 +1,4 @@
-// 한 학기 결산 — 노션 기록으로 숫자를 자동 계산한다. 학기가 끝나기 전에는 "지금까지" 결산으로 보인다.
+// 한 학기 결산 — 노션 기록으로 숫자를 자동 계산한다. 학기가 끝난 뒤에만 열린다.
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
@@ -29,11 +29,23 @@ async function RecapContent({ unlocked }: { unlocked: boolean }) {
   "use cache";
   cacheLife({ stale: 60, revalidate: REVALIDATE_SECONDS, expire: 3600 });
 
+  const s = semesterState(SCHOOL.semesterStart, SCHOOL.semesterEnd, todayIn(SCHOOL.timeZone));
+  if (s.phase !== "after") {
+    // 학기 중에는 결산을 보여 주지 않는다 (노션도 읽지 않는다)
+    return (
+      <section className="card mx-auto flex max-w-xl flex-col items-center py-14 text-center">
+        <p className="text-4xl">🎁</p>
+        <h1 className="mt-4 text-lg font-semibold">한 학기 결산은 아직 준비 중이에요</h1>
+        <p className="label mt-1">{SCHOOL.semesterEnd.replaceAll("-", ".")} 학기가 끝나면 열려요.</p>
+        <Link href="/" className="label mt-6 hover:text-sea">
+          ← 홈으로
+        </Link>
+      </section>
+    );
+  }
+
   const data = await getDiaryData(unlocked);
   const r = recapOf(data, SCHOOL.semesterStart, SCHOOL.semesterEnd);
-  const s = semesterState(SCHOOL.semesterStart, SCHOOL.semesterEnd, todayIn(SCHOOL.timeZone));
-  const heading =
-    s.phase === "after" ? "한 학기 결산" : s.phase === "during" ? `지금까지의 결산 · D+${s.day}` : "결산 미리보기";
   const maxMonth = Math.max(1, ...r.months.map((m) => m.count));
 
   return (
@@ -43,11 +55,10 @@ async function RecapContent({ unlocked }: { unlocked: boolean }) {
         <p className="dot text-xs text-muted">
           SEMESTER RECAP · {SCHOOL.city.toUpperCase()} {SCHOOL.semesterStart.slice(0, 4)}
         </p>
-        <h1 className="mt-2 text-xl font-bold text-sea sm:text-2xl">{heading}</h1>
+        <h1 className="mt-2 text-xl font-bold text-sea sm:text-2xl">한 학기 결산</h1>
         <p className="label mt-1">
           {SITE.profileName}의 {SCHOOL.semesterStart.replaceAll("-", ".")} ~ {SCHOOL.semesterEnd.replaceAll("-", ".")}
         </p>
-        {s.phase === "before" && <p className="mt-3 text-sm text-muted">출발 전이에요. 기록이 쌓이면 여기 숫자가 저절로 채워져요.</p>}
         {!unlocked && <p className="label mt-2">공개한 기록만 셌어요.</p>}
       </section>
 

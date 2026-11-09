@@ -5,6 +5,7 @@ import { Suspense } from "react";
 import { cacheLife } from "next/cache";
 import { REVALIDATE_SECONDS, SCHOOL } from "@/lib/config";
 import { getDiaryData } from "@/lib/diary-data";
+import { semesterState, todayIn } from "@/lib/dates";
 import { travelStats } from "@/lib/stats";
 import { isUnlocked } from "@/lib/viewer";
 import { PostageStamp } from "../country-stamp";
@@ -28,15 +29,18 @@ async function StampsContent({ unlocked }: { unlocked: boolean }) {
   cacheLife({ stale: 60, revalidate: REVALIDATE_SECONDS, expire: 3600 });
 
   const stats = travelStats(await getDiaryData(unlocked));
+  const ended = semesterState(SCHOOL.semesterStart, SCHOOL.semesterEnd, todayIn(SCHOOL.timeZone)).phase === "after";
 
   return (
     <div className="flex flex-col gap-2.5">
       <section className="card">
         <div className="flex items-baseline justify-between gap-2">
           <p className="dot text-xs text-muted">STAMP BOOK · {SCHOOL.city.toUpperCase()} {SCHOOL.semesterStart.slice(0, 4)}</p>
-          <Link href="/recap" className="label hover:text-sea">
-            한 학기 결산 +
-          </Link>
+          {ended && (
+            <Link href="/recap" className="label hover:text-sea">
+              한 학기 결산 +
+            </Link>
+          )}
         </div>
         <div className="mt-3 grid grid-cols-3 gap-2 text-center">
           {[
