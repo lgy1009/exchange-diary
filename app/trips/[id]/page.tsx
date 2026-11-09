@@ -16,6 +16,7 @@ import { isUnlocked } from "@/lib/viewer";
 import { NotionBody } from "../../notion-body";
 import { NotionImage } from "../../notion-image";
 import { TripBudgetCard } from "../../trip-budget";
+import { BlogButton } from "../../blog-link";
 
 export const metadata: Metadata = { title: "여행" };
 
@@ -68,6 +69,7 @@ async function TripContent({ id, unlocked }: { id: string; unlocked: boolean }) 
       <div className="mt-6">
         <NotionBody blocks={blocks} />
       </div>
+      {trip.blog && <BlogButton href={trip.blog} />}
       {budget && <TripBudgetCard budget={budget} />}
     </article>
   );

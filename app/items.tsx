@@ -16,7 +16,10 @@ export function TripItem({ trip }: { trip: Trip }) {
       )}
       <div className="min-w-0">
         <p className="dot text-xs text-terracotta">{trip.period ? rangeLabel(trip.period.start, trip.period.end) : ""}</p>
-        <p className="mt-0.5 truncate font-semibold group-hover:text-sea">{trip.title}</p>
+        <p className="mt-0.5 truncate font-semibold group-hover:text-sea">
+          {trip.title}
+          {trip.blog && <span className="ml-1 text-xs" title="블로그 글 있음">📖</span>}
+        </p>
         <p className="label mt-0.5 truncate">
           {[trip.countries.map(nameOf).join(" · "), trip.place].filter(Boolean).join(" — ")}
         </p>
@@ -40,7 +43,10 @@ export function EntryItem({ entry }: { entry: Entry | LockedEntry }) {
     <Link href={`/diary/${entry.id}`} className="card group flex items-center gap-3 p-3 hover:bg-white">
       <span className="dot w-12 shrink-0 text-terracotta">{date}</span>
       <span className="min-w-0 flex-1">
-        <span className="block truncate group-hover:text-sea">{entry.title}</span>
+        <span className="block truncate group-hover:text-sea">
+          {entry.title}
+          {entry.blog && <span className="ml-1 text-xs" title="블로그 글 있음">📖</span>}
+        </span>
         {entry.place && <span className="label block truncate">{entry.place}</span>}
       </span>
       {entry.mood && <span className="shrink-0 text-sm">{entry.mood.split(" ")[0]}</span>}

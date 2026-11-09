@@ -55,6 +55,27 @@ function checkOf(props: Props, name: string): boolean {
   return p?.checkbox === true; // 체크가 확실할 때만 공개
 }
 
+// 네이버 블로그 글 주소만 받는다. 다른 주소나 이상한 값은 버린다 (사이트에 엉뚱한 링크가 걸리지 않게).
+const BLOG_HOSTS = new Set(["blog.naver.com", "m.blog.naver.com"]);
+export function safeBlogUrl(value: string | null | undefined): string | null {
+  if (!value) return null;
+  try {
+    const u = new URL(value.trim());
+    if (u.protocol !== "https:" && u.protocol !== "http:") return null;
+    if (!BLOG_HOSTS.has(u.hostname.toLowerCase())) return null;
+    if (u.username || u.password || u.port) return null;
+    u.protocol = "https:";
+    return u.toString();
+  } catch {
+    return null;
+  }
+}
+
+function urlOf(props: Props, name: string): string | null {
+  const p = props[name] as { url?: string | null } | undefined;
+  return typeof p?.url === "string" ? p.url : null;
+}
+
 function hasFiles(props: Props, name: string): boolean {
   const p = props[name] as { files?: unknown[] } | undefined;
   return (p?.files ?? []).length > 0;
@@ -100,6 +121,7 @@ export function toTrip(page: PageLike): Trip {
     lng: numberOf(p, "경도"),
     summary: textOf(p, "한 줄 요약"),
     hasCover: hasFiles(p, "대표 사진"),
+    blog: safeBlogUrl(urlOf(p, "블로그")),
     isPublic: checkOf(p, "공개"),
   };
 }
@@ -115,6 +137,7 @@ export function toEntry(page: PageLike): Entry {
     place: textOf(p, "장소"),
     tags: multiOf(p, "태그"),
     hasCover: hasFiles(p, "대표 사진"),
+    blog: safeBlogUrl(urlOf(p, "블로그")),
     isPublic: checkOf(p, "공개"),
   };
 }

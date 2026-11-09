@@ -14,6 +14,7 @@ import { isLocked } from "@/lib/transform";
 import { isUnlocked } from "@/lib/viewer";
 import { NotionBody } from "../../notion-body";
 import { NotionImage } from "../../notion-image";
+import { BlogButton } from "../../blog-link";
 
 export const metadata: Metadata = { title: "일기" };
 
@@ -81,6 +82,7 @@ async function EntryContent({ id, unlocked }: { id: string; unlocked: boolean })
       <div className="mt-6">
         <NotionBody blocks={blocks} />
       </div>
+      {entry.blog && <BlogButton href={entry.blog} />}
     </article>
   );
 }

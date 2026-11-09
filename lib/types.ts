@@ -40,6 +40,7 @@ export type Trip = {
   lng: number | null;
   summary: string;
   hasCover: boolean; // 대표 사진이 있는지 (사진 주소는 만료되므로 여기 담지 않고, 사진 경로로 받는다)
+  blog: string | null; // 네이버 블로그 글 주소 (검사를 통과한 것만)
   isPublic: boolean;
 };
 
@@ -53,6 +54,7 @@ export type Entry = {
   place: string;
   tags: string[];
   hasCover: boolean;
+  blog: string | null; // 네이버 블로그 글 주소 (검사를 통과한 것만)
   isPublic: boolean;
 };
 

@@ -7,6 +7,7 @@ import fs from "node:fs";
 import {
   filterForViewer,
   isLocked,
+  safeBlogUrl,
   sortRaw,
   toCourse,
   toEntry,
@@ -65,6 +66,12 @@ assert.equal(raw.events.find((e) => e.id === "e3").isPublic, false, "공개 열�
 assert.deepEqual(raw.trips[1].countries, ["PT"], "나라 이름 → 코드, 목록에 없는 나라는 빠짐");
 assert.deepEqual(raw.trips[0].countries, [], "나라를 안 적은 여행");
 assert.deepEqual(raw.bucket.map((b) => b.id), ["b2", "b3", "b1"], "버킷리스트는 못 한 것 먼저");
+assert.equal(safeBlogUrl("https://blog.naver.com/abc/223"), "https://blog.naver.com/abc/223", "네이버 블로그 주소는 통과");
+assert.equal(safeBlogUrl("http://m.blog.naver.com/abc/223"), "https://m.blog.naver.com/abc/223", "http는 https로");
+assert.equal(safeBlogUrl("https://evil.com/blog.naver.com"), null, "다른 사이트는 버림");
+assert.equal(safeBlogUrl("https://blog.naver.com.evil.com/x"), null, "비슷한 이름도 버림");
+assert.equal(safeBlogUrl("javascript:alert(1)"), null, "스크립트 주소는 버림");
+assert.equal(safeBlogUrl("아무 글자"), null, "주소가 아니면 버림");
 assert.equal(raw.entries.find((e) => e.id === "d1").country, "ES", "일기 나라를 비우면 스페인");
 assert.equal(raw.entries.find((e) => e.id === "d2").country, "FR");
 assert.equal(raw.profile.status, "새 상태", "프로필은 가장 최근 줄");

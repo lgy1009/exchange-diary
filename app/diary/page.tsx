@@ -63,6 +63,7 @@ async function DiaryContent({ unlocked }: { unlocked: boolean }) {
                     )}
                     <p className="dot mt-2 text-xs text-terracotta">
                       {date} · {e.country}
+                      {e.blog && <span title="블로그 글 있음"> · 📖</span>}
                     </p>
                     <p className="mt-0.5 line-clamp-2 text-sm font-semibold group-hover:text-sea">{e.title}</p>
                     <p className="label mt-0.5 truncate">{[e.place || nameOf(e.country), ...e.tags.map((t) => `#${t}`)].join("  ")}</p>
