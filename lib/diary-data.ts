@@ -1,5 +1,5 @@
 // 화면(서버 컴포넌트)이 데이터를 받는 유일한 입구.
-// 노션에서 6개 데이터베이스를 읽어 사이트 모양으로 바꾸고, 보는 사람에 맞게 거른 뒤 돌려준다.
+// 노션에서 7개 데이터베이스를 읽어 사이트 모양으로 바꾸고, 보는 사람에 맞게 거른 뒤 돌려준다.
 // 서버 코드에서만 쓴다. 비밀번호 확인 여부(unlocked)는 부르는 쪽이 쿠키로 판단해 넘긴다. (작업 10)
 
 import { cacheLife } from "next/cache";
@@ -11,6 +11,7 @@ import {
   toCourse,
   toEntry,
   toEvent,
+  toBucket,
   toGuestbook,
   toProfile,
   toTrip,
@@ -25,13 +26,14 @@ async function loadRaw(): Promise<RawDiaryData> {
 
   const dbs = await findDatabases();
   const read = async (id: string | undefined) => (id ? queryAll(id) : []);
-  const [events, courses, trips, entries, profile, guestbook] = await Promise.all([
+  const [events, courses, trips, entries, profile, guestbook, bucket] = await Promise.all([
     read(dbs.events?.id),
     read(dbs.courses?.id),
     read(dbs.trips?.id),
     read(dbs.entries?.id),
     read(dbs.profile?.id),
     read(dbs.guestbook?.id),
+    read(dbs.bucket?.id),
   ]);
 
   return sortRaw({
@@ -41,6 +43,7 @@ async function loadRaw(): Promise<RawDiaryData> {
     entries: entries.map(toEntry),
     profile: toProfile(profile),
     guestbook: guestbook.map(toGuestbook),
+    bucket: bucket.map(toBucket),
   });
 }
 

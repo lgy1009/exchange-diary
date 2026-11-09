@@ -43,6 +43,7 @@ export const DB_TITLES = {
   entries: "일기",
   profile: "프로필",
   guestbook: "방명록",
+  bucket: "버킷리스트",
 } as const;
 export type DbKey = keyof typeof DB_TITLES;
 

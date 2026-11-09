@@ -13,6 +13,7 @@ import { LocalClock } from "./local-clock";
 import { NotionImage } from "./notion-image";
 import { EuropeMap, type MapPoint } from "./europe-map";
 import { Flag } from "./flag";
+import { Progress } from "./progress";
 
 export default function HomePage() {
   return (
@@ -42,6 +43,7 @@ async function HomeContent({ unlocked }: { unlocked: boolean }) {
       <div className="flex flex-col gap-2.5 sm:col-span-2 md:col-span-1">
         <PhotosCard data={data} />
         <DiaryCard data={data} />
+        <BucketCard data={data} />
         <GuestbookCard data={data} />
       </div>
     </div>
@@ -208,6 +210,41 @@ function DiaryCard({ data }: { data: DiaryData }) {
           </li>
         ))}
       </ul>
+    </section>
+  );
+}
+
+// ---- 버킷리스트 (진행률 + 아직 못 한 것 2개) ----
+function BucketCard({ data }: { data: DiaryData }) {
+  const done = data.bucket.filter((b) => b.done).length;
+  const next = data.bucket.filter((b) => !b.done).slice(0, 2);
+  return (
+    <section className="card">
+      <div className="card-head">
+        <h2 className="label">버킷리스트</h2>
+        <Link href="/bucket" className="label hover:text-sea">
+          more +
+        </Link>
+      </div>
+      {data.bucket.length === 0 ? (
+        <p className="text-sm text-muted">하고 싶은 것을 적어 주세요.</p>
+      ) : (
+        <>
+          <div className="flex items-center gap-2">
+            <Progress done={done} total={data.bucket.length} className="h-2.5 flex-1" />
+            <span className="dot shrink-0 text-xs text-terracotta">
+              {done}/{data.bucket.length}
+            </span>
+          </div>
+          <ul className="retro-list mt-1.5 flex flex-col text-sm">
+            {next.map((b) => (
+              <li key={b.id} className="truncate">
+                <span className="text-muted">☐</span> {b.title}
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
     </section>
   );
 }

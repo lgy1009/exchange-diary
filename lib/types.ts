@@ -82,6 +82,17 @@ export type GuestbookEntry = {
   approved: boolean;
 };
 
+// ⑦ 버킷리스트
+export type BucketItem = {
+  id: string;
+  title: string;
+  done: boolean;
+  doneAt: string | null; // 완료한 날 "YYYY-MM-DD"
+  category: string | null; // 말라가 / 여행 / 학교 / 기타
+  memo: string;
+  isPublic: boolean;
+};
+
 // 화면에 넘겨주는 전체 데이터
 export type DiaryData = {
   unlocked: boolean; // 비밀번호를 확인한 요청인지
@@ -91,6 +102,7 @@ export type DiaryData = {
   entries: (Entry | LockedEntry)[];
   profile: Profile | null;
   guestbook: GuestbookEntry[]; // 승인된 글만, 최신 순
+  bucket: BucketItem[];
 };
 
 // 노션에서 읽어 온 그대로(비공개·승인 대기 포함). 서버 안에서만 쓰고 화면에 바로 넘기지 않는다.
@@ -101,4 +113,5 @@ export type RawDiaryData = {
   entries: Entry[];
   profile: Profile | null;
   guestbook: GuestbookEntry[];
+  bucket: BucketItem[];
 };

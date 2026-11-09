@@ -10,6 +10,7 @@ import type {
   Entry,
   EventItem,
   GuestbookEntry,
+  BucketItem,
   LockedEntry,
   Profile,
   RawDiaryData,
@@ -144,6 +145,20 @@ export function toGuestbook(page: PageLike): GuestbookEntry {
   };
 }
 
+export function toBucket(page: PageLike): BucketItem {
+  const p = page.properties;
+  const done = dateOf(p, "완료한 날");
+  return {
+    id: page.id,
+    title: textOf(p, "할 일"),
+    done: checkOf(p, "완료"),
+    doneAt: done ? done.start.slice(0, 10) : null,
+    category: selectOf(p, "분류"),
+    memo: textOf(p, "메모"),
+    isPublic: checkOf(p, "공개"),
+  };
+}
+
 // 날짜순 정렬 (날짜 없는 항목은 어느 쪽이든 맨 뒤)
 function byDate<T>(get: (x: T) => DateRange | null, newestFirst: boolean) {
   return (a: T, b: T) => {
@@ -162,6 +177,10 @@ export function sortRaw(raw: RawDiaryData): RawDiaryData {
     entries: [...raw.entries].sort(byDate((e) => e.date, true)),
     profile: raw.profile,
     guestbook: [...raw.guestbook].sort((a, b) => b.createdAt.localeCompare(a.createdAt)), // 최신 글부터
+    // 버킷리스트: 아직 못 한 것 먼저, 해낸 것은 최근에 해낸 것부터
+    bucket: [...raw.bucket].sort((a, b) =>
+      a.done !== b.done ? (a.done ? 1 : -1) : (b.doneAt ?? "").localeCompare(a.doneAt ?? ""),
+    ),
   };
 }
 
@@ -173,6 +192,7 @@ export function sortRaw(raw: RawDiaryData): RawDiaryData {
 // 누구에게나:
 //   프로필    — 그대로 (홈에 보이는 공개 정보)
 //   방명록    — 승인된 글만 (비밀번호를 풀어도 승인 대기 글은 노션에서만 본다)
+//   버킷리스트 — 비밀번호 없이 볼 때는 공개 체크된 것만
 export function lockEntry(e: Entry): LockedEntry {
   return { id: e.id, date: e.date, locked: true };
 }
@@ -188,6 +208,7 @@ export function filterForViewer(raw: RawDiaryData, unlocked: boolean): DiaryData
     entries: raw.entries.map((e) => (e.isPublic ? e : lockEntry(e))),
     profile: raw.profile,
     guestbook,
+    bucket: raw.bucket.filter((b) => b.isPublic),
   };
 }
 
