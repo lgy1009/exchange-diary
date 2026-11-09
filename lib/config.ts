@@ -44,6 +44,7 @@ export const DB_TITLES = {
   profile: "프로필",
   guestbook: "방명록",
   bucket: "버킷리스트",
+  budget: "가계부", // 비밀번호를 푼 사람에게만 보인다 (여행별 가계부)
 } as const;
 export type DbKey = keyof typeof DB_TITLES;
 

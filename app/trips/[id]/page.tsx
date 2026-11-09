@@ -1,4 +1,4 @@
-// 여행 상세 (DESIGN §1 /trips/[id]) — 기간·나라·도시, 노션 본문(글·사진)
+// 여행 상세 (DESIGN §1 /trips/[id]) — 기간·나라·도시, 노션 본문(글·사진), 여행 가계부(비밀번호 푼 사람만)
 // 비공개 여행은 비밀번호 확인 전엔 존재 자체를 알리지 않는다(없음 화면).
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -7,6 +7,7 @@ import { Suspense } from "react";
 import { cacheLife } from "next/cache";
 import { REVALIDATE_SECONDS } from "@/lib/config";
 import { getPageBlocks } from "@/lib/blocks";
+import { getTripBudget } from "@/lib/budget";
 import { nameOf } from "@/lib/countries";
 import { getTrip } from "@/lib/diary-data";
 import { dayOf } from "@/lib/dates";
@@ -14,6 +15,7 @@ import { normalizeId } from "@/lib/image";
 import { isUnlocked } from "@/lib/viewer";
 import { NotionBody } from "../../notion-body";
 import { NotionImage } from "../../notion-image";
+import { TripBudgetCard } from "../../trip-budget";
 
 export const metadata: Metadata = { title: "여행" };
 
@@ -38,6 +40,8 @@ async function TripContent({ id, unlocked }: { id: string; unlocked: boolean }) 
   const trip = await getTrip(id, unlocked);
   if (!trip) notFound();
   const blocks = await getPageBlocks(trip.id);
+  // 돈 기록은 비밀번호를 푼 사람에게만. 잠긴 상태에서는 가계부를 읽지도 않는다.
+  const budget = unlocked ? await getTripBudget(trip.id) : null;
   const start = trip.period ? dayOf(trip.period.start).replaceAll("-", ".") : "";
   const end = trip.period?.end ? dayOf(trip.period.end).replaceAll("-", ".") : "";
 
@@ -64,6 +68,7 @@ async function TripContent({ id, unlocked }: { id: string; unlocked: boolean }) 
       <div className="mt-6">
         <NotionBody blocks={blocks} />
       </div>
+      {budget && <TripBudgetCard budget={budget} />}
     </article>
   );
 }

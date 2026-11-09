@@ -69,14 +69,14 @@ export async function findDatabases(): Promise<Partial<Record<DbKey, NotionDatab
   return found;
 }
 
-// 데이터베이스의 모든 줄을 가져온다 (한 번에 100개씩 이어서)
-export async function queryAll(databaseId: string): Promise<NotionPage[]> {
+// 데이터베이스의 모든 줄을 가져온다 (한 번에 100개씩 이어서). filter를 주면 노션이 맞는 줄만 돌려준다.
+export async function queryAll(databaseId: string, filter?: unknown): Promise<NotionPage[]> {
   const pages: NotionPage[] = [];
   let cursor: string | undefined;
   do {
     const data = await notion<{ results: NotionPage[]; has_more: boolean; next_cursor: string | null }>(
       `/databases/${databaseId}/query`,
-      { page_size: 100, ...(cursor ? { start_cursor: cursor } : {}) },
+      { page_size: 100, ...(filter ? { filter } : {}), ...(cursor ? { start_cursor: cursor } : {}) },
     );
     pages.push(...data.results);
     cursor = data.has_more && data.next_cursor ? data.next_cursor : undefined;
