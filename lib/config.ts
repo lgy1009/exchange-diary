@@ -14,7 +14,7 @@ export const SCHOOL = {
   country: "Spain",
   // ★ 학기 날짜는 대략 값(2027년 2월~7월)입니다. 정확한 날짜가 나오면 고쳐 주세요. (홈의 D-day·진행률에 쓰입니다)
   semesterStart: "2027-02-01", // 학기 시작일 (YYYY-MM-DD)
-  semesterEnd: "2027-07-31", // 학기 종료일 (YYYY-MM-DD)
+  semesterEnd: "2027-07-23", // 학기 종료일 = 귀국 예정일 (YYYY-MM-DD)
   timeZone: "Europe/Madrid", // 말라가 시간대
   lat: 36.7213, // 학교 위치 (지도 핀)
   lng: -4.4214,
