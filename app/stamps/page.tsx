@@ -32,7 +32,12 @@ async function StampsContent({ unlocked }: { unlocked: boolean }) {
   return (
     <div className="flex flex-col gap-2.5">
       <section className="card">
-        <p className="dot text-xs text-muted">STAMP BOOK · {SCHOOL.city.toUpperCase()} {SCHOOL.semesterStart.slice(0, 4)}</p>
+        <div className="flex items-baseline justify-between gap-2">
+          <p className="dot text-xs text-muted">STAMP BOOK · {SCHOOL.city.toUpperCase()} {SCHOOL.semesterStart.slice(0, 4)}</p>
+          <Link href="/recap" className="label hover:text-sea">
+            한 학기 결산 +
+          </Link>
+        </div>
         <div className="mt-3 grid grid-cols-3 gap-2 text-center">
           {[
             [stats.countryCount, "countries", "나라"],

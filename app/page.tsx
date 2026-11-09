@@ -99,6 +99,9 @@ function ProfileCard({ profile, today }: { profile: Profile | null; today: strin
           <dd className="dot mt-0.5 text-lg text-terracotta">{dday}</dd>
         </div>
       </dl>
+      <Link href="/recap" className="label mt-2 text-center hover:text-sea">
+        {s.phase === "after" ? "★ 한 학기 결산 보기" : "지금까지의 결산 보기"} +
+      </Link>
     </section>
   );
 }
